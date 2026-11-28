@@ -98,11 +98,11 @@ export async function apply(ctx: DshHostContext): Promise<void> {
     void domain.close();
   }, 'clew:storage-domain');
 
-  let agentServiceAvailable = Boolean(ctx.get('agents'));
-  ctx.inject(['agents'], () => {
-    agentServiceAvailable = true;
+  let liveAgents: DshHostContext['agents'] | undefined = ctx.get<DshHostContext['agents']>('agents');
+  ctx.inject(['agents'], (agentCtx) => {
+    liveAgents = agentCtx.agents ?? agentCtx.get<DshHostContext['agents']>('agents');
     return () => {
-      agentServiceAvailable = Boolean(ctx.get('agents'));
+      liveAgents = undefined;
     };
   });
 
@@ -113,7 +113,7 @@ export async function apply(ctx: DshHostContext): Promise<void> {
   const bus = new ClewEventBus();
   const jobs = new JobQueueService(bus);
   const projects = new ProjectService(domain.table('repos'), cacheDir, cloneRoot, jobs);
-  const traces = new TraceService(ctx, projects, jobs, bus);
+  const traces = new TraceService(() => liveAgents, projects, jobs, bus);
   const annotations = new AnnotationService(
     domain.table('annotations'),
     domain.table('paths'),
@@ -136,7 +136,7 @@ export async function apply(ctx: DshHostContext): Promise<void> {
     pluginVersion: PLUGIN_VERSION,
     registeredSkills,
     hasStorage: () => true,
-    hasAgents: () => agentServiceAvailable,
+    hasAgents: () => Boolean(liveAgents),
     bumpPing,
     projects,
     traces,
@@ -166,7 +166,7 @@ export async function apply(ctx: DshHostContext): Promise<void> {
             registeredTools,
             registeredSkills,
             storageReady: true,
-            agentServiceAvailable,
+            agentServiceAvailable: Boolean(liveAgents),
             persistedPings,
             timestamp: new Date().toISOString(),
             ...(parsed.echo !== undefined ? { echo: parsed.echo } : {}),

@@ -28,7 +28,7 @@ export class TraceService {
   };
 
   constructor(
-    private readonly ctx: DshHostContext,
+    private readonly getAgents: () => DshHostContext['agents'] | undefined,
     private readonly projects: ProjectService,
     private readonly jobs: JobQueueService,
     private readonly bus: ClewEventBus,
@@ -279,7 +279,7 @@ export class TraceService {
     repoRoot: string,
     prompt: string,
   ): Promise<{ text: string | null; enhanced: boolean }> {
-    const agents = this.ctx.agents ?? this.ctx.get<DshHostContext['agents']>('agents');
+    const agents = this.getAgents();
     if (!agents?.create) {
       return { text: null, enhanced: false };
     }
