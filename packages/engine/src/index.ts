@@ -7,3 +7,4 @@ export * from './parsers/fallback-extractor.js';
 export * from './parsers/ast-extractor.js';
 export * from './disk-cache.js';
 export * from './symbol-index.js';
+export * from './navigation.js';
