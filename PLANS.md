@@ -10,5 +10,5 @@
 | **M5** | Core Interactive Workbench UI | 3-column layout, Worker ELK graph, virtualized read-only reader, command palette, global search, exploration trail, Ask AI | `done` |
 | **M6** | Annotations, Caching & Diagnostics | Line-level annotations, path persistence, token budget & cache reuse, incremental indexing base, diagnostics view | `done` |
 | **M7** | Real Multi-Language E2E Validation | E2E validation across >=2 real OSS repos (Python/C++ + Go/Rust/C), pinned SHAs, bug fixes, `docs/validation/` | `done` |
-| **M8** | Polish, Visual Review & High-Value P1 | Two-round Impeccable + browser review (`docs/UI-REVIEW.md`), accessibility/perf/security audits, selected P1 features | `in_progress` |
-| **M9** | Release & GitHub Pages Homepage | Full test suite, clean install/uninstall test, bilingual `README`, `CHANGELOG.md`, `docs/release/`, `website/` + Pages workflow | `pending` |
+| **M8** | Polish, Visual Review & High-Value P1 | Two-round Impeccable + browser review (`docs/UI-REVIEW.md`), accessibility/perf/security audits, selected P1 features | `done` |
+| **M9** | Release & GitHub Pages Homepage | Full test suite, clean install/uninstall test, bilingual `README`, `CHANGELOG.md`, `docs/release/`, `website/` + Pages workflow | `in_progress` |

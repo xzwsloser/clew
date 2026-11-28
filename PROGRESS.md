@@ -1,9 +1,9 @@
 # PROGRESS.md — Session Recovery & Live Status
 
 - **Current Version**: `0.0.1-dev`
-- **Active Milestone**: `M8 — High-Value P1 Enhancements, 2-Round UI Review & Audits`
+- **Active Milestone**: `M9 — Clean Install, Bilingual Docs, Release Assets & GitHub Pages`
 - **Active Branch**: `develop`
-- **Last Stable Commit**: `M7 multi-language real OSS E2E validation across ripgrep, gin & llama.cpp`
+- **Last Stable Commit**: `M8 P1 features, two-round Impeccable browser visual review & real screenshots`
 
 ## Completed
 - Verified workspace `/home/xzw/projects/clew` is clean and empty.
@@ -19,17 +19,19 @@
 
 - **M7**: Completed multi-language real OSS E2E validation (`docs/validation/E2E-REPORT.md`) across `ripgrep` (`3e85c6c148`, Rust, 221 files, 4,116 symbols), `gin` (`eb4d4b52e5`, Go, 129 files, 1,643 symbols), and `llama.cpp` (`8e23278c7c`, C++/C/Python/TS/JS, 4,737 files, 48,952 symbols) — verifying 5.7x–7.6x warm disk-cache speedup, AST-filtered references, verified trace graphs, restart recovery, and live `dsh web` browser flows with 0 console/HTTP errors. Fixed entry-point / core-module tour noise filtering in `overview.ts` + stale `symbolPick` reset in `CodeReader.tsx`.
 
+- **M8**: Implemented P1 features (`nav/peek` Symbol Peek Card, read-only `git/line-context` commit history integrated into Evidence & Ask AI, Dual-Pane Split Compare & persisted Reading Status tags in `statuses` KV table) with regression tests; completed Round 1 & Round 2 real browser visual reviews across `1280×800`, `1440×900`, `1920×1080`, Dark/Light, EN/ZH; saved verified real screenshots to `docs/screenshots/` and documented fixes + a11y/perf/security audits in `docs/UI-REVIEW.md`.
+
 ## In Progress
-- **M8**: Implementing selected P1 enhancements (Hover/Peek card, Git Blame/Commit context, Dual-Pane comparison + reading status tags), followed by 2 rounds of Impeccable + browser visual review (`docs/UI-REVIEW.md`) & audits.
+- **M9**: Clean-environment `dsh plugin add`/`remove` test, bilingual `README.md`/`README.zh-CN.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `docs/release/DSH-PLUGIN-SUBMISSION.md`, and GitHub Pages static `website/`.
 
 ## Latest Test Results
-- `pnpm run build && pnpm run typecheck && pnpm run lint && pnpm run test`: 8 test files, 13 tests passing (`@clew/shared`, `@clew/engine`, `@clew/dsh-plugin`).
-- Real OSS E2E Validation (`ripgrep`, `gin`, `llama.cpp`): 100% cache reuse on warm pass, 0 console/HTTP errors in live `dsh web`.
+- `pnpm run build && pnpm run typecheck && pnpm run lint && pnpm run test`: 8 test files, 14 tests passing (`@clew/shared`, `@clew/engine`, `@clew/dsh-plugin`).
+- Round 2 live `dsh web` browser verification: 0 console errors, 0 HTTP 4xx/5xx across 50 requests, all 9 Round 1 UI defects verified resolved.
 
 ## Blockers & Technical Debt
 - None.
 
 ## Next Actions
-1. Implement M8 high-value P1 enhancements (`peekSymbolPreview`, `readLineGitContext`, Dual-Pane Split View & Reading Status Tags) with TDD + full verification.
-2. Execute two rounds of real browser + Impeccable visual/UX review (`docs/UI-REVIEW.md`, `docs/screenshots/`) and accessibility/performance/security audits.
-3. Complete M9 clean install/remove lifecycle test, bilingual docs, release materials, GitHub Pages homepage (`website/`), final gate & push to `main`.
+1. Run clean-environment `dsh plugin add` / `remove` test and clean `/tmp/clew-validation-repos`.
+2. Author bilingual `README.md`, `README.zh-CN.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `docs/release/DSH-PLUGIN-SUBMISSION.md`, and sync `docs/ARCHITECTURE.md` / `DESIGN.md`.
+3. Build & visually verify `website/` static GitHub Pages homepage + `.github/workflows/pages.yml`, run final full verification, merge `develop` -> `main`, tag `v0.1.0`, and push to GitHub.
