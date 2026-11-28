@@ -14,11 +14,11 @@ const NODE_W = 212;
 const NODE_H = 64;
 
 const CONFIDENCE_COLORS: Record<EdgeConfidence, string> = {
-  source_verified_call: '#2DD4BF',
-  static_dependency: '#64748B',
-  inferred_dynamic: '#F59E0B',
-  dataflow: '#38BDF8',
-  unverified: '#9CA3AF',
+  source_verified_call: 'var(--clew-edge-verified, #0F766E)',
+  static_dependency: 'var(--clew-edge-static, #475569)',
+  inferred_dynamic: 'var(--clew-edge-inferred, #B45309)',
+  dataflow: 'var(--clew-edge-dataflow, #0369A1)',
+  unverified: 'var(--clew-edge-unverified, #6B7280)',
 };
 
 export function TraceGraphCanvas({
@@ -132,11 +132,23 @@ export function TraceGraphCanvas({
           )}
         </div>
         <div className="clew-zoom-controls">
-          <button type="button" className="clew-btn-xs" onClick={() => setZoom((z) => Math.max(0.45, z - 0.15))}>
+          <button
+            type="button"
+            className="clew-btn-xs"
+            onClick={() => setZoom((z) => Math.max(0.45, z - 0.15))}
+            aria-label="Zoom out"
+            title="Zoom out"
+          >
             −
           </button>
           <span className="clew-mono">{Math.round(zoom * 100)}%</span>
-          <button type="button" className="clew-btn-xs" onClick={() => setZoom((z) => Math.min(2, z + 0.15))}>
+          <button
+            type="button"
+            className="clew-btn-xs"
+            onClick={() => setZoom((z) => Math.min(2, z + 0.15))}
+            aria-label="Zoom in"
+            title="Zoom in"
+          >
             +
           </button>
           <button
@@ -146,6 +158,7 @@ export function TraceGraphCanvas({
               setZoom(1);
               setPan({ x: 0, y: 0 });
             }}
+            aria-label={t('ui.graph.reset')}
           >
             {t('ui.graph.reset')}
           </button>

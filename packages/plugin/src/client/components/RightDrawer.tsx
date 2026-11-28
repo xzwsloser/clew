@@ -6,6 +6,7 @@ import type {
   TraceGraph,
   TraceNode,
 } from '@clew/shared/contracts';
+import { SimpleMarkdown } from './SimpleMarkdown.js';
 
 export type RightTab = 'qa' | 'annotations' | 'evidence';
 
@@ -88,73 +89,79 @@ export function RightDrawer({
         ))}
       </div>
 
-      <div className="clew-rail-body">
+      <div className={`clew-rail-body ${activeTab === 'qa' ? 'clew-rail-qa' : ''}`}>
         {activeTab === 'qa' && (
           <div className="clew-qa-pane" data-testid="clew-qa-pane">
-            {selectedNode && (
-              <div className="clew-mini-card">
-                <div className="clew-section-header">
-                  <span className="clew-mono clew-item-title">{selectedNode.qualifiedName}</span>
-                  <span className="clew-badge-subtle">{selectedNode.kind}</span>
-                </div>
-                <div className="clew-item-sub">
-                  {selectedNode.file}:{selectedNode.startLine}–{selectedNode.endLine}
-                </div>
-                {selectedNode.summary && (
-                  <pre className="clew-code-snippet">{selectedNode.summary}</pre>
-                )}
-              </div>
-            )}
-
-            {trace && (
-              <div className="clew-mini-card" data-testid="clew-trace-narrative">
-                <div className="clew-section-title">{t('ui.qa.traceSummary')}</div>
-                <p className="clew-prose">{trace.narrative}</p>
-                <div className="clew-pill-wrap">
-                  {trace.citations.map((cit, idx) => (
-                    <button
-                      key={`${cit.file}:${cit.line}:${idx}`}
-                      type="button"
-                      className={`clew-citation-pill ${cit.verified ? 'verified' : ''}`}
-                      onClick={() => onOpenCitation(cit.file, cit.line, cit.symbolName)}
-                      data-testid="clew-citation-pill"
-                    >
-                      {cit.verified ? '✓ ' : '? '}
-                      {cit.file.split('/').pop()}:{cit.line}
-                    </button>
-                  ))}
-                </div>
-                <div className="clew-telemetry-line">
-                  {trace.telemetry.filesRead} {t('ui.qa.filesRead')} · ~{trace.telemetry.estimatedTokens} tok ·{' '}
-                  {trace.telemetry.cacheHit ? 'cache hit' : `${trace.telemetry.durationMs}ms`}
-                </div>
-              </div>
-            )}
-
-            <div className="clew-qa-thread">
-              {qaHistory.map((item) => (
-                <div key={item.id} className="clew-mini-card" data-testid="clew-qa-item">
-                  <div className="clew-qa-q">
-                    <span className="clew-mono">
-                      {item.file.split('/').pop()}:{item.startLine}–{item.endLine}
-                    </span>
-                    <div>{item.question}</div>
+            <div className="clew-qa-scroll">
+              {selectedNode && (
+                <div className="clew-mini-card">
+                  <div className="clew-section-header">
+                    <span className="clew-mono clew-item-title">{selectedNode.qualifiedName}</span>
+                    <span className="clew-badge-subtle">{selectedNode.kind}</span>
                   </div>
-                  <div className="clew-prose">{item.answer}</div>
+                  <div className="clew-item-sub">
+                    {selectedNode.file}:{selectedNode.startLine}–{selectedNode.endLine}
+                  </div>
+                  {selectedNode.summary && (
+                    <pre className="clew-code-snippet">{selectedNode.summary}</pre>
+                  )}
+                </div>
+              )}
+
+              {trace && (
+                <div className="clew-mini-card" data-testid="clew-trace-narrative">
+                  <div className="clew-section-title">{t('ui.qa.traceSummary')}</div>
+                  <div className="clew-prose">
+                    <SimpleMarkdown text={trace.narrative} />
+                  </div>
                   <div className="clew-pill-wrap">
-                    {item.citations.map((c, idx) => (
+                    {trace.citations.map((cit, idx) => (
                       <button
-                        key={`${c.file}:${c.line}:${idx}`}
+                        key={`${cit.file}:${cit.line}:${idx}`}
                         type="button"
-                        className={`clew-citation-pill ${c.verified ? 'verified' : ''}`}
-                        onClick={() => onOpenCitation(c.file, c.line, c.symbolName)}
+                        className={`clew-citation-pill ${cit.verified ? 'verified' : ''}`}
+                        onClick={() => onOpenCitation(cit.file, cit.line, cit.symbolName)}
+                        data-testid="clew-citation-pill"
                       >
-                        {c.file.split('/').pop()}:{c.line}
+                        {cit.verified ? '✓ ' : '? '}
+                        {cit.file.split('/').pop()}:{cit.line}
                       </button>
                     ))}
                   </div>
+                  <div className="clew-telemetry-line">
+                    {trace.telemetry.filesRead} {t('ui.qa.filesRead')} · ~{trace.telemetry.estimatedTokens} tok ·{' '}
+                    {trace.telemetry.cacheHit ? 'cache hit' : `${trace.telemetry.durationMs}ms`}
+                  </div>
                 </div>
-              ))}
+              )}
+
+              <div className="clew-qa-thread">
+                {qaHistory.map((item) => (
+                  <div key={item.id} className="clew-mini-card" data-testid="clew-qa-item">
+                    <div className="clew-qa-q">
+                      <span className="clew-mono">
+                        {item.file.split('/').pop()}:{item.startLine}–{item.endLine}
+                      </span>
+                      <div>{item.question}</div>
+                    </div>
+                    <div className="clew-prose">
+                      <SimpleMarkdown text={item.answer} />
+                    </div>
+                    <div className="clew-pill-wrap">
+                      {item.citations.map((c, idx) => (
+                        <button
+                          key={`${c.file}:${c.line}:${idx}`}
+                          type="button"
+                          className={`clew-citation-pill ${c.verified ? 'verified' : ''}`}
+                          onClick={() => onOpenCitation(c.file, c.line, c.symbolName)}
+                        >
+                          {c.file.split('/').pop()}:{c.line}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <form
@@ -169,7 +176,7 @@ export function RightDrawer({
             >
               <textarea
                 className="clew-textarea"
-                rows={3}
+                rows={2}
                 value={questionInput}
                 onChange={(e) => setQuestionInput(e.target.value)}
                 placeholder={t('ui.qa.placeholder')}

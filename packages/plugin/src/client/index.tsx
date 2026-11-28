@@ -98,8 +98,23 @@ function ClewWorkbench({ ctx, t }: { ctx: DshClientContext; t: (key: string) => 
   const [viewMode, setViewMode] = useState<CenterViewMode>('split');
   const [leftOpen, setLeftOpen] = useState(true);
   const [rightOpen, setRightOpen] = useState(true);
-  const [leftWidth, setLeftWidth] = useState(268);
-  const [rightWidth, setRightWidth] = useState(336);
+  const [leftWidth, setLeftWidth] = useState(() =>
+    typeof window !== 'undefined' && window.innerWidth <= 1360 ? 216 : 260,
+  );
+  const [rightWidth, setRightWidth] = useState(() =>
+    typeof window !== 'undefined' && window.innerWidth <= 1360 ? 280 : 332,
+  );
+
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth <= 1360) {
+        setLeftWidth((w) => Math.min(w, 224));
+        setRightWidth((w) => Math.min(w, 286));
+      }
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
   const dragRef = useRef<{ side: 'left' | 'right'; startX: number; startW: number } | null>(null);
 
   const [showImportModal, setShowImportModal] = useState(false);

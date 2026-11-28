@@ -46,7 +46,7 @@ export function ImportRepoModal({
       <div className="clew-modal">
         <div className="clew-modal-header">
           <h2>{t('ui.importModal.title')}</h2>
-          <button type="button" className="clew-text-btn" onClick={onClose}>
+          <button type="button" className="clew-text-btn" onClick={onClose} aria-label="Close">
             ×
           </button>
         </div>
@@ -238,7 +238,7 @@ export function GlobalSearchModal({
       <div className="clew-modal clew-modal-lg">
         <div className="clew-modal-header">
           <h2>{t('ui.searchModal.title')}</h2>
-          <button type="button" className="clew-text-btn" onClick={onClose}>
+          <button type="button" className="clew-text-btn" onClick={onClose} aria-label="Close">
             ×
           </button>
         </div>
@@ -322,7 +322,7 @@ export function PeekModal({
       <div className="clew-modal">
         <div className="clew-modal-header">
           <h2>{t('ui.peek.title')}</h2>
-          <button type="button" className="clew-text-btn" onClick={onClose}>
+          <button type="button" className="clew-text-btn" onClick={onClose} aria-label="Close">
             ×
           </button>
         </div>
@@ -381,7 +381,7 @@ export function DiagnosticsModal({
       <div className="clew-modal clew-modal-lg">
         <div className="clew-modal-header">
           <h2>{t('ui.diagnosticsModal.title')}</h2>
-          <button type="button" className="clew-text-btn" onClick={onClose}>
+          <button type="button" className="clew-text-btn" onClick={onClose} aria-label="Close">
             ×
           </button>
         </div>

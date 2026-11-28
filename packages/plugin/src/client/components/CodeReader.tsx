@@ -101,6 +101,14 @@ export function CodeReader({
     overscan: 20,
   });
 
+  useEffect(() => {
+    if (focusedLine && activeTab && lines.length > 0) {
+      rowVirtualizer.scrollToIndex(Math.min(lines.length - 1, Math.max(0, focusedLine - 5)), {
+        align: 'start',
+      });
+    }
+  }, [focusedLine, activeTab, lines.length, rowVirtualizer]);
+
   const annotatedLines = useMemo(() => {
     const map = new Map<number, AnnotationRecord[]>();
     if (!activeTab) return map;
@@ -145,6 +153,7 @@ export function CodeReader({
             disabled={!canBack}
             onClick={onBack}
             title="Alt+Left"
+            aria-label="Back"
           >
             ←
           </button>
@@ -154,6 +163,7 @@ export function CodeReader({
             disabled={!canForward}
             onClick={onForward}
             title="Alt+Right"
+            aria-label="Forward"
           >
             →
           </button>
@@ -434,6 +444,7 @@ export function CodeReader({
                 type="button"
                 className="clew-text-btn"
                 onClick={() => onChangeSplitCompareFile(null)}
+                aria-label={t('ui.reader.closeSplit')}
               >
                 ×
               </button>

@@ -156,6 +156,7 @@ export function TopBar({
           onClick={onOpenPalette}
           disabled={!activeRepoId}
           title="Cmd/Ctrl + P"
+          aria-label="Command Palette (Cmd/Ctrl+P)"
           data-testid="clew-cmd-p-btn"
         >
           ⌘P
@@ -166,6 +167,7 @@ export function TopBar({
           onClick={onOpenGlobalSearch}
           disabled={!activeRepoId}
           title="Cmd/Ctrl + Shift + F"
+          aria-label="Global Search (Cmd/Ctrl+Shift+F)"
           data-testid="clew-search-btn"
         >
           ⌘⇧F

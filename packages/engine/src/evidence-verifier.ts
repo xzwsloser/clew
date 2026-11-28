@@ -120,5 +120,22 @@ export function verifyTraceEvidence(
     });
   }
 
-  return { nodes: verifiedNodes, edges: verifiedEdges };
+  const RANK: Record<EdgeConfidence, number> = {
+    source_verified_call: 5,
+    static_dependency: 4,
+    dataflow: 3,
+    inferred_dynamic: 2,
+    unverified: 1,
+  };
+
+  const deduped = new Map<string, TraceEdge>();
+  for (const edge of verifiedEdges) {
+    const key = `${edge.source}|${edge.file ?? ''}|${edge.line ?? 0}|${edge.label ?? edge.target}`;
+    const existing = deduped.get(key);
+    if (!existing || RANK[edge.confidence] > RANK[existing.confidence]) {
+      deduped.set(key, edge);
+    }
+  }
+
+  return { nodes: verifiedNodes, edges: Array.from(deduped.values()) };
 }
