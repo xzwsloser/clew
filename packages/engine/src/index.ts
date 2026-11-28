@@ -8,3 +8,7 @@ export * from './parsers/ast-extractor.js';
 export * from './disk-cache.js';
 export * from './symbol-index.js';
 export * from './navigation.js';
+export * from './overview.js';
+export * from './graph.js';
+export * from './token-budget.js';
+export * from './evidence-verifier.js';
