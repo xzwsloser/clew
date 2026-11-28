@@ -74,7 +74,7 @@ export async function apply(ctx: DshHostContext): Promise<void> {
     {
       repos: z.infer<typeof RepoRecordSchema>;
       annotations: z.infer<typeof AnnotationRecordSchema>;
-      readingPaths: z.infer<typeof ReadingPathRecordSchema>;
+      paths: z.infer<typeof ReadingPathRecordSchema>;
     }
   > = await ctx.storageDomain.open({
     name: 'clew',
@@ -90,7 +90,7 @@ export async function apply(ctx: DshHostContext): Promise<void> {
     tables: {
       repos: { valueSchema: RepoRecordSchema },
       annotations: { valueSchema: AnnotationRecordSchema },
-      readingPaths: { valueSchema: ReadingPathRecordSchema },
+      paths: { valueSchema: ReadingPathRecordSchema },
     },
   });
 
@@ -116,7 +116,7 @@ export async function apply(ctx: DshHostContext): Promise<void> {
   const traces = new TraceService(ctx, projects, jobs, bus);
   const annotations = new AnnotationService(
     domain.table('annotations'),
-    domain.table('readingPaths'),
+    domain.table('paths'),
     projects,
   );
 
