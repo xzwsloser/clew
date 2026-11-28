@@ -3,8 +3,8 @@
 | Milestone | Scope | Key Deliverables | Status |
 |---|---|---|---|
 | **M0** | Repository Init & Engineering Baseline | Git repo (`main`/`develop`), `AGENTS.md`, `GOALS.md`, `PLANS.md`, `PROGRESS.md`, `docs/TESTING.md` | `done` |
-| **M1** | AI Tooling Probe & Zero-Native Deps | `docs/AI-TOOLING.md`, `.agents/skills/`, Codex CLI & image-gen probe, `web-tree-sitter` & DSH SDK verification | `in_progress` |
-| **M2** | Brand Assets, Design & Architecture | `assets/brand/`, `assets/design/`, `docs/discussions/*`, `docs/adr/*`, `DESIGN.md`, `docs/ARCHITECTURE.md` (with Mermaid) | `pending` |
+| **M1** | AI Tooling Probe & Zero-Native Deps | `docs/AI-TOOLING.md`, `.agents/skills/`, Codex CLI & image-gen probe, `web-tree-sitter` & DSH SDK verification | `done` |
+| **M2** | Brand Assets, Design & Architecture | `assets/brand/`, `assets/design/`, `docs/discussions/*`, `docs/adr/*`, `DESIGN.md`, `docs/ARCHITECTURE.md` (with Mermaid) | `in_progress` |
 | **M3** | Monorepo & Minimal Native DSH Plugin | `pnpm` workspace, CI, `@clew/shared`, `@clew/engine` skeleton, `@clew/dsh-plugin` verified in `dsh web` | `pending` |
 | **M4** | Multi-Language Engine & Runtime Skills | Scanner, WASM Tree-sitter parsers, symbol index, Go-to-Def/Find-Refs, overview, jobs, graph retrieval, evidence verifier, runtime skills | `pending` |
 | **M5** | Core Interactive Workbench UI | 3-column layout, Worker ELK graph, virtualized read-only reader, command palette, global search, exploration trail, Ask AI | `pending` |
