@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Clew — Interactive read-only source code reading & understanding workbench for DeepSeek Harness.",
   "private": false,
+  "license": "MIT",
   "type": "module",
   "main": "./lib/index.js",
   "exports": {

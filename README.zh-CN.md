@@ -103,3 +103,6 @@ clew/
 ```
 
 开发规范与提交流程请参阅 [`CONTRIBUTING.md`](CONTRIBUTING.md) 与 [`CHANGELOG.md`](CHANGELOG.md)。
+
+## 开源协议
+本项目基于 [MIT 协议](LICENSE) 开源。

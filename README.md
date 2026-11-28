@@ -106,3 +106,6 @@ clew/
 ```
 
 For development workflows and checks, see [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`CHANGELOG.md`](CHANGELOG.md).
+
+## License
+Licensed under the [MIT License](LICENSE).

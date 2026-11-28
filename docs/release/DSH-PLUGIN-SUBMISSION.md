@@ -6,7 +6,7 @@
 - **Display Name**: `Clew` / `Clew 源码线索工作台`
 - **Repository**: `https://github.com/xzwsloser/clew`
 - **Homepage**: `https://xzwsloser.github.io/clew/`
-- **License**: `MIT` (check package metadata before publishing)
+- **License**: `MIT` ([`LICENSE`](../../LICENSE))
 
 ## 2. Manifest & DSH Extension Surfaces
 - **Host Entry**: `./lib/index.js`
