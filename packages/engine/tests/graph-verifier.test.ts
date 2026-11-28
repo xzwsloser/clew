@@ -65,4 +65,27 @@ describe('@clew/engine overview, subgraph retrieval, token budget, and evidence 
       rmSync(repo, { recursive: true, force: true });
     }
   });
+
+  it('ignores workflow YAML and test files when ranking overview entry points', async () => {
+    const repo = mkdtempSync(join(tmpdir(), 'clew-overview-filter-'));
+    try {
+      mkdirSync(join(repo, '.github', 'workflows'), { recursive: true });
+      mkdirSync(join(repo, 'tests'), { recursive: true });
+      mkdirSync(join(repo, 'src'), { recursive: true });
+      writeFileSync(join(repo, '.github', 'workflows', 'server.yml'), 'name: ci\n');
+      writeFileSync(join(repo, '.gitignore'), 'node_modules\n');
+      writeFileSync(join(repo, 'tests', 'main_test.py'), 'def main():\n    pass\n');
+      writeFileSync(join(repo, 'src', 'app.py'), 'def main():\n    return 0\n');
+
+      const index = await buildRepositoryIndex(repo);
+      const overview = buildRepoOverview('r-filter', 'sample', index);
+      expect(overview.entryPoints.map((e) => e.file)).toEqual(['src/app.py']);
+      expect(overview.entryPoints[0]?.symbolName).toBe('main');
+      const tourFiles = overview.recommendedPaths.flatMap((p) => p.steps.map((s) => s.file));
+      expect(tourFiles).not.toContain('.gitignore');
+      expect(tourFiles).not.toContain('.github/workflows/server.yml');
+    } finally {
+      rmSync(repo, { recursive: true, force: true });
+    }
+  });
 });

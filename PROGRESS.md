@@ -1,9 +1,9 @@
 # PROGRESS.md — Session Recovery & Live Status
 
 - **Current Version**: `0.0.1-dev`
-- **Active Milestone**: `M7 — Multi-Language Real OSS E2E Validation`
+- **Active Milestone**: `M8 — High-Value P1 Enhancements, 2-Round UI Review & Audits`
 - **Active Branch**: `develop`
-- **Last Stable Commit**: `M5 & M6 3-column workbench, Worker ELK graph, virtualized reader, annotations & diagnostics`
+- **Last Stable Commit**: `M7 multi-language real OSS E2E validation across ripgrep, gin & llama.cpp`
 
 ## Completed
 - Verified workspace `/home/xzw/projects/clew` is clean and empty.
@@ -15,18 +15,21 @@
 - **M3**: Scaffolded `pnpm` monorepo + CI (`.github/workflows/ci.yml`), `@clew/shared` (browser-safe `./contracts` + Node path/symlink guard), `@clew/engine` skeleton (`language-detector` + `searchWithRipgrep`), and `@clew/dsh-plugin` (`ctx.storageDomain`, `ctx.tools`, `ctx.skills`, `/api/clew/rpc`, `/api/clew/events` SSE, `sidebar.panellist` + `main` slots). Verified end-to-end inside isolated `dsh web` via real browser (`Clew` sidebar & panel rendered, RPC 200, SSE seq 0->1, `persistedPings` 1->2, `ctx.agents` live probe, 0 console/HTTP errors).
 
 - **M4**: Delivered complete host-agnostic `@clew/engine` (scanner with `.gitignore`/`.clewignore`/binary/symlink guards, Git metadata reader, WASM Tree-sitter parsers for Python/C/C++/Go/Rust/TS/TSX/JS + regex fallback, incremental disk cache, 4-tier Go-to-Definition, AST-filtered Find References, overview, bounded subgraph retrieval, token budget trimmer, reverse evidence verifier) and wired `@clew/dsh-plugin` application services, job queue, 7 deterministic tools, 4 runtime skills, and full `/api/clew/rpc` + SSE endpoints.
-- **M5 & M6**: Built full 3-column Clew Workbench UI (Web Worker `elkjs` graph canvas with edge confidence filters & zoom/pan, `@tanstack/react-virtual` read-only code reader with XSS-safe multi-language highlighting, outline, Back/Forward history, selection floating toolbar, `Cmd+P` palette, `Cmd+Shift+F` ripgrep search, live Exploration Trail + saved reading paths, line annotations with anchor revalidation, Ask AI with clickable citations, Diagnostics & cache controls, and full EN/ZH dictionaries).
+- **M5 & M6**: Built full 3-column Clew Workbench UI (Web Worker `elkjs` graph canvas with edge confidence filters & zoom/pan, `@tanstack/react-virtual` read-only code reader with XSS-safe multi-language highlighting, outline, Back/Forward history, selection floating toolbar, `Cmd+P` palette, `Cmd+Shift+F` ripgrep search, live Exploration Trail + saved reading paths, line annotations with anchor revalidation, Ask AI with clickable citations, Diagnostics & cache controls, and full EN/ZH dictionaries). Verified live end-to-end inside isolated `dsh web` (`18766`) via real browser (`20` nodes / `30` edges ELK graph, node->code sync, `Ask AI` citations, `Cmd+P`, `Cmd+Shift+F`, Exploration Trail -> Save Reading Path -> page reload persistence, Diagnostics telemetry, `0` console/HTTP 4xx/5xx errors).
+
+- **M7**: Completed multi-language real OSS E2E validation (`docs/validation/E2E-REPORT.md`) across `ripgrep` (`3e85c6c148`, Rust, 221 files, 4,116 symbols), `gin` (`eb4d4b52e5`, Go, 129 files, 1,643 symbols), and `llama.cpp` (`8e23278c7c`, C++/C/Python/TS/JS, 4,737 files, 48,952 symbols) — verifying 5.7x–7.6x warm disk-cache speedup, AST-filtered references, verified trace graphs, restart recovery, and live `dsh web` browser flows with 0 console/HTTP errors. Fixed entry-point / core-module tour noise filtering in `overview.ts` + stale `symbolPick` reset in `CodeReader.tsx`.
 
 ## In Progress
-- M5/M6 live `dsh web` browser verification, followed by M7 multi-language real OSS E2E validation.
+- **M8**: Implementing selected P1 enhancements (Hover/Peek card, Git Blame/Commit context, Dual-Pane comparison + reading status tags), followed by 2 rounds of Impeccable + browser visual review (`docs/UI-REVIEW.md`) & audits.
 
 ## Latest Test Results
-- `pnpm run build && pnpm run typecheck && pnpm run lint && pnpm run test`: 8 test files, 12 tests passing (`@clew/shared`, `@clew/engine`, `@clew/dsh-plugin`).
+- `pnpm run build && pnpm run typecheck && pnpm run lint && pnpm run test`: 8 test files, 13 tests passing (`@clew/shared`, `@clew/engine`, `@clew/dsh-plugin`).
+- Real OSS E2E Validation (`ripgrep`, `gin`, `llama.cpp`): 100% cache reuse on warm pass, 0 console/HTTP errors in live `dsh web`.
 
 ## Blockers & Technical Debt
 - None.
 
 ## Next Actions
-1. Verify full 3-column workbench live in isolated `dsh web` via real browser.
-2. Execute M7 multi-language real OSS E2E validation (`docs/validation/`) on >=2 real repos across Python/C++ and Go/Rust/C with pinned Commit SHAs.
-3. Run M8 two-round browser & Impeccable visual review (`docs/UI-REVIEW.md`), accessibility/perf/security audits, and high-value P1 enhancements, then M9 release & GitHub Pages website.
+1. Implement M8 high-value P1 enhancements (`peekSymbolPreview`, `readLineGitContext`, Dual-Pane Split View & Reading Status Tags) with TDD + full verification.
+2. Execute two rounds of real browser + Impeccable visual/UX review (`docs/UI-REVIEW.md`, `docs/screenshots/`) and accessibility/performance/security audits.
+3. Complete M9 clean install/remove lifecycle test, bilingual docs, release materials, GitHub Pages homepage (`website/`), final gate & push to `main`.

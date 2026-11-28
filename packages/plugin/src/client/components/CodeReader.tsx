@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import type {
   AnnotationRecord,
@@ -66,6 +66,10 @@ export function CodeReader({
 }: CodeReaderProps) {
   const scrollParentRef = useRef<HTMLDivElement | null>(null);
   const [symbolPick, setSymbolPick] = useState<string>('');
+
+  useEffect(() => {
+    setSymbolPick('');
+  }, [activeTab?.file]);
 
   const lines = activeTab?.lines ?? [];
   const rowVirtualizer = useVirtualizer({

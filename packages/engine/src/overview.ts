@@ -92,30 +92,54 @@ export function buildRepoOverview(
     .sort((a, b) => b.fileCount - a.fileCount || a.path.localeCompare(b.path))
     .slice(0, 12);
 
-  const entryPoints: RepoOverview['entryPoints'] = [];
+  const isNonEntryNoisePath = (p: string): boolean =>
+    /(?:^|\/)(?:\.github|docs|test|tests|__tests__|spec|specs|bench|benchmarks|benchsuite|examples|testdata)\//i.test(
+      p,
+    ) || /(?:_test\.go|\.test\.[cm]?[jt]sx?|\.spec\.[cm]?[jt]sx?|_test\.rs|_test\.py)$/i.test(p);
+
+  const entryCandidates: Array<{
+    score: number;
+    entry: RepoOverview['entryPoints'][number];
+  }> = [];
+
   for (const file of index.files) {
+    if (file.language === 'text') continue;
+    if (isNonEntryNoisePath(file.path)) continue;
     const base = basename(file.path);
     const syms = index.symbolsByFile.get(file.path) ?? [];
     const mainSym = syms.find((s) =>
-      ['main', 'run', 'serve', 'start', 'init', 'apply', 'dispatch'].includes(s.name),
+      ['main', 'ServeHTTP', 'serve', 'start', 'apply', 'run', 'dispatch', 'init'].includes(s.name),
     );
+    const isConventionalFile = ENTRY_FILE_PATTERNS.some((re) => re.test(base));
     if (mainSym) {
-      entryPoints.push({
-        file: file.path,
-        symbolName: mainSym.name,
-        line: mainSym.startLine,
-        reason: `Entry symbol \`${mainSym.name}\``,
+      const symBonus = mainSym.name === 'main' ? 30 : mainSym.name === 'init' ? 10 : 20;
+      const depthPenalty = file.path.split('/').length;
+      entryCandidates.push({
+        score: symBonus + (isConventionalFile ? 15 : 0) - depthPenalty,
+        entry: {
+          file: file.path,
+          symbolName: mainSym.name,
+          line: mainSym.startLine,
+          reason: `Entry symbol \`${mainSym.name}\``,
+        },
       });
-    } else if (ENTRY_FILE_PATTERNS.some((re) => re.test(base))) {
-      entryPoints.push({
-        file: file.path,
-        symbolName: syms[0]?.name,
-        line: syms[0]?.startLine ?? 1,
-        reason: `Conventional entry file \`${base}\``,
+    } else if (isConventionalFile) {
+      entryCandidates.push({
+        score: 15 - file.path.split('/').length,
+        entry: {
+          file: file.path,
+          symbolName: syms[0]?.name,
+          line: syms[0]?.startLine ?? 1,
+          reason: `Conventional entry file \`${base}\``,
+        },
       });
     }
-    if (entryPoints.length >= 10) break;
   }
+
+  const entryPoints: RepoOverview['entryPoints'] = entryCandidates
+    .sort((a, b) => b.score - a.score || a.entry.file.localeCompare(b.entry.file))
+    .slice(0, 10)
+    .map((item) => item.entry);
 
   const recommendedPaths: RepoOverview['recommendedPaths'] = [];
   if (entryPoints.length > 0) {
@@ -133,7 +157,11 @@ export function buildRepoOverview(
     const moduleSteps = coreModules
       .slice(0, 4)
       .flatMap((mod) => {
-        const matchFile = index.files.find((f) => moduleGroupOf(f.path) === mod.path);
+        const matchFile =
+          index.files.find(
+            (f) => moduleGroupOf(f.path) === mod.path && f.language !== 'text' && !isNonEntryNoisePath(f.path),
+          ) ??
+          index.files.find((f) => moduleGroupOf(f.path) === mod.path && f.language !== 'text');
         const firstSym = matchFile ? index.symbolsByFile.get(matchFile.path)?.[0] : undefined;
         return matchFile
           ? [
