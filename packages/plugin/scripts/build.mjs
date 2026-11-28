@@ -28,7 +28,22 @@ await esbuild.build({
   ],
 });
 
-// 2. Build Client CJS factory bundle wrapped in DSH window.__ModuleLoader__.load
+// 2. Build same-origin ELK Web Worker (CSP-safe without blob: URLs)
+await esbuild.build({
+  entryPoints: [resolve(pkgRoot, 'src/client/workers/elk-worker.ts')],
+  outfile: resolve(libDir, 'elk-worker.js'),
+  bundle: true,
+  format: 'iife',
+  platform: 'browser',
+  target: ['es2022'],
+  sourcemap: false,
+  minify: true,
+  define: {
+    'process.env.NODE_ENV': '"production"',
+  },
+});
+
+// 3. Build Client CJS factory bundle wrapped in DSH window.__ModuleLoader__.load
 const clientResult = await esbuild.build({
   entryPoints: [resolve(pkgRoot, 'src/client/index.tsx')],
   write: false,

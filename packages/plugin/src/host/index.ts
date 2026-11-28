@@ -1,5 +1,7 @@
+import { readFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import {
   AgentPingRequestSchema,
@@ -535,4 +537,28 @@ export async function apply(ctx: DshHostContext): Promise<void> {
       },
     });
   }, 'clew:sse');
+
+  const hostModuleDir = dirname(fileURLToPath(import.meta.url));
+  const elkWorkerPath = resolve(hostModuleDir, 'elk-worker.js');
+  ctx.effect(() => {
+    return ctx.connection.fetch.register({
+      path: '/api/clew/elk-worker.js',
+      methods: ['GET'],
+      requestBody: 'buffered',
+      fetch: async () => {
+        try {
+          const js = await readFile(elkWorkerPath, 'utf8');
+          return new Response(js, {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/javascript; charset=utf-8',
+              'Cache-Control': 'public, max-age=300',
+            },
+          });
+        } catch {
+          return new Response('// worker unavailable', { status: 404 });
+        }
+      },
+    });
+  }, 'clew:elk-worker');
 }

@@ -1,9 +1,9 @@
 # PROGRESS.md — Session Recovery & Live Status
 
 - **Current Version**: `0.0.1-dev`
-- **Active Milestone**: `M5 & M6 — Core 3-Column Workbench UI, Annotations & Diagnostics`
+- **Active Milestone**: `M7 — Multi-Language Real OSS E2E Validation`
 - **Active Branch**: `develop`
-- **Last Stable Commit**: `M4.5 full engine + plugin services, tools & runtime skills`
+- **Last Stable Commit**: `M5 & M6 3-column workbench, Worker ELK graph, virtualized reader, annotations & diagnostics`
 
 ## Completed
 - Verified workspace `/home/xzw/projects/clew` is clean and empty.

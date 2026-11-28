@@ -7,18 +7,139 @@
     "label": "Clew",
     "badge": "READ-ONLY",
     "tagline": "Find your way through complex codebases.",
-    "refresh": "Refresh Status",
-    "pingAgent": "Probe Host Agent",
-    "statusTitle": "Host & Plugin Readiness",
-    "toolsTitle": "Registered Deterministic Tools",
-    "skillsTitle": "Registered Runtime Skills",
-    "sseTitle": "SSE Event Channel",
-    "storageLabel": "Host Storage Domain",
-    "agentLabel": "Host Agent Service",
-    "persistedPingsLabel": "Persisted Health Pings",
-    "languagesLabel": "P0 Supported Languages",
-    "loading": "Connecting to Clew host service...",
-    "ready": "Connected",
-    "error": "Failed to reach Clew host service"
+    "loading": "Loading Clew workbench..."
+  },
+  "ui": {
+    "toggleLeft": "Toggle Left Sidebar",
+    "toggleRight": "Toggle Right Drawer",
+    "readOnlyTooltip": "Clew never edits repository files or executes target repository scripts.",
+    "selectRepo": "Select repository",
+    "noRepoOption": "No repository imported",
+    "importRepo": "Import Repo",
+    "goalPlaceholder": "Ask a reading goal (e.g. How does request scheduling dispatch work?)...",
+    "traceBtn": "Trace",
+    "cancel": "Cancel",
+    "viewMode": "Center View Mode",
+    "view": {
+      "split": "Split",
+      "graph": "Graph",
+      "code": "Code"
+    },
+    "diagnostics": "Diagnostics",
+    "leftRailLabel": "Repository Navigation",
+    "rightDrawerLabel": "Context & Notes",
+    "emptyRepoHint": "Import a local folder or Git URL to start reading.",
+    "clear": "Clear",
+    "delete": "Delete",
+    "noResults": "No matching results.",
+    "left": {
+      "files": "Files",
+      "overview": "Overview",
+      "trail": "Trail"
+    },
+    "overview": {
+      "summary": "Repository Summary",
+      "files": "Indexed Files",
+      "symbols": "Symbols",
+      "languages": "Languages",
+      "buildSystems": "Build Systems",
+      "entryPoints": "Entry Points",
+      "recommendedPaths": "Recommended Paths"
+    },
+    "trail": {
+      "liveTitle": "Exploration Trail",
+      "empty": "Navigate definitions, files, or graph nodes to build your trail automatically.",
+      "savePlaceholder": "Path title...",
+      "saveBtn": "Save Path",
+      "toGraph": "Trace Goal",
+      "savedTitle": "Saved Reading Paths",
+      "noSaved": "No saved paths yet."
+    },
+    "graph": {
+      "loading": "Retrieving & verifying trace graph...",
+      "emptyTitle": "Implementation Trace Graph",
+      "emptyDesc": "Enter a natural-language reading goal above or pick a symbol to generate a verified call & dependency graph.",
+      "filterPlaceholder": "Filter nodes...",
+      "reset": "Reset"
+    },
+    "confidence": {
+      "source_verified_call": "Verified",
+      "static_dependency": "Static",
+      "inferred_dynamic": "Inferred",
+      "dataflow": "Dataflow",
+      "unverified": "Unverified"
+    },
+    "reader": {
+      "emptyTitle": "Read-Only Source Reader",
+      "emptyDesc": "Select a file from the tree, press Cmd/Ctrl+P, or click a trace node.",
+      "outline": "Outline",
+      "symbolPlaceholder": "symbol...",
+      "askAi": "Ask AI",
+      "annotate": "Annotate",
+      "definition": "Definition",
+      "references": "References",
+      "pin": "Pin"
+    },
+    "right": {
+      "qa": "Ask AI",
+      "annotations": "Notes",
+      "evidence": "Evidence"
+    },
+    "qa": {
+      "traceSummary": "Trace Summary",
+      "filesRead": "files read",
+      "placeholder": "Ask about the selected lines, callers, or dataflow...",
+      "askBtn": "Ask Clew",
+      "thinking": "Analyzing..."
+    },
+    "annotations": {
+      "title": "Line Annotations",
+      "revalidate": "Revalidate",
+      "titlePlaceholder": "Short title (optional)",
+      "bodyPlaceholder": "Write a note anchored to these lines...",
+      "save": "Save Note",
+      "empty": "Select lines in the reader and click Annotate to record persistent notes.",
+      "resolve": "Resolve",
+      "reopen": "Reopen",
+      "replyPlaceholder": "Add a reply and press Enter..."
+    },
+    "evidence": {
+      "referencesFor": "References for",
+      "edgesTitle": "Graph Edge Evidence",
+      "empty": "Run a trace goal or Find References to inspect source evidence."
+    },
+    "importModal": {
+      "title": "Import Repository (Read-Only)",
+      "local": "Local Path",
+      "git": "Git URL",
+      "pathLabel": "Absolute Local Directory Path",
+      "urlLabel": "Git Clone URL (HTTPS / SSH)",
+      "nameLabel": "Display Name (optional)",
+      "namePlaceholder": "Defaults to folder/repo name",
+      "readOnlyNotice": "Clew indexes source files in read-only mode and never runs target repository scripts.",
+      "submit": "Import & Index",
+      "indexing": "Indexing..."
+    },
+    "palette": {
+      "placeholder": "Search files and symbols across repository... (Enter to jump)"
+    },
+    "searchModal": {
+      "title": "Global Text Search (ripgrep)",
+      "placeholder": "Search code...",
+      "searchBtn": "Search",
+      "subpathPlaceholder": "Subpath filter (e.g. src/)"
+    },
+    "peek": {
+      "title": "Multiple Definition Candidates"
+    },
+    "diagnosticsModal": {
+      "title": "Clew Diagnostics & Cache",
+      "cacheDir": "Disk Cache Path",
+      "cacheSize": "Cache Footprint",
+      "counts": "Persisted Entities",
+      "lastRun": "Last Trace Telemetry",
+      "clearCache": "Clear Index Cache",
+      "logs": "Recent Host Logs"
+    }
   }
 }
