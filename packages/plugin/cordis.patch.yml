@@ -1,0 +1,4 @@
+- insert:
+    - id: clew
+      name: '@clew/dsh-plugin'
+      config: {}

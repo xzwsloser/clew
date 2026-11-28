@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "title": "Clew",
+    "description": "Interactive read-only source code reading and trace workbench for complex codebases."
+  },
+  "panel": {
+    "label": "Clew",
+    "badge": "READ-ONLY",
+    "tagline": "Find your way through complex codebases.",
+    "refresh": "Refresh Status",
+    "pingAgent": "Probe Host Agent",
+    "statusTitle": "Host & Plugin Readiness",
+    "toolsTitle": "Registered Deterministic Tools",
+    "skillsTitle": "Registered Runtime Skills",
+    "sseTitle": "SSE Event Channel",
+    "storageLabel": "Host Storage Domain",
+    "agentLabel": "Host Agent Service",
+    "persistedPingsLabel": "Persisted Health Pings",
+    "languagesLabel": "P0 Supported Languages",
+    "loading": "Connecting to Clew host service...",
+    "ready": "Connected",
+    "error": "Failed to reach Clew host service"
+  }
+}
