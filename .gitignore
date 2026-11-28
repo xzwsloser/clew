@@ -1,0 +1,33 @@
+# Dependencies & build outputs
+node_modules/
+dist/
+lib/
+build/
+coverage/
+.turbo/
+.vite/
+.tsbuildinfo
+*.tsbuildinfo
+
+# Environment & credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Runtime caches & validation artifacts
+.clew-cache/
+.playwright-artifacts/
+.dsh-test/
+tmp/
+*.log
+*.pid
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
