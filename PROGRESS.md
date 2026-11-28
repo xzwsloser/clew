@@ -1,9 +1,9 @@
 # PROGRESS.md — Session Recovery & Live Status
 
 - **Current Version**: `0.0.1-dev`
-- **Active Milestone**: `M4 — Multi-Language Engine & Runtime Skills`
+- **Active Milestone**: `M5 & M6 — Core 3-Column Workbench UI, Annotations & Diagnostics`
 - **Active Branch**: `develop`
-- **Last Stable Commit**: `M3 verified minimal native DSH plugin`
+- **Last Stable Commit**: `M4.5 full engine + plugin services, tools & runtime skills`
 
 ## Completed
 - Verified workspace `/home/xzw/projects/clew` is clean and empty.
@@ -14,8 +14,10 @@
 - **M2**: Generated original Clew brand assets (`assets/brand/`), workbench concept (`assets/design/workbench-concept.png`) & landing wireframe (`assets/design/landing-concept.svg`), completed 2 Codex CLI architecture reviews (`docs/discussions/`), authored 5 ADRs (`docs/adr/0001..0005`), `DESIGN.md`, and `docs/ARCHITECTURE.md` (with 4 Mermaid diagrams).
 - **M3**: Scaffolded `pnpm` monorepo + CI (`.github/workflows/ci.yml`), `@clew/shared` (browser-safe `./contracts` + Node path/symlink guard), `@clew/engine` skeleton (`language-detector` + `searchWithRipgrep`), and `@clew/dsh-plugin` (`ctx.storageDomain`, `ctx.tools`, `ctx.skills`, `/api/clew/rpc`, `/api/clew/events` SSE, `sidebar.panellist` + `main` slots). Verified end-to-end inside isolated `dsh web` via real browser (`Clew` sidebar & panel rendered, RPC 200, SSE seq 0->1, `persistedPings` 1->2, `ctx.agents` live probe, 0 console/HTTP errors).
 
+- **M4**: Delivered complete host-agnostic `@clew/engine` (scanner with `.gitignore`/`.clewignore`/binary/symlink guards, Git metadata reader, WASM Tree-sitter parsers for Python/C/C++/Go/Rust/TS/TSX/JS + regex fallback, incremental disk cache, 4-tier Go-to-Definition, AST-filtered Find References, overview, bounded subgraph retrieval, token budget trimmer, reverse evidence verifier) and wired `@clew/dsh-plugin` application services, job queue, 7 deterministic tools, 4 runtime skills, and full `/api/clew/rpc` + SSE endpoints.
+
 ## In Progress
-- M4: Implementing the full multi-language code understanding engine (`scanner`, WASM Tree-sitter parsers, incremental symbol index, zero-config navigation, overview, subgraph retrieval, token budget trimmer, evidence verifier) and Clew runtime skills.
+- M5 & M6: Building the 3-column interactive workbench UI (Web Worker ELK trace graph, virtualized read-only code reader, command palette, global search, exploration trail, Ask AI, line annotations, saved paths, diagnostics drawer).
 
 ## Latest Test Results
 - `pnpm run build && pnpm run typecheck && pnpm run lint && pnpm run test`: 3 test files, 5 tests passing (`@clew/shared`, `@clew/engine`, `@clew/dsh-plugin`).

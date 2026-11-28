@@ -102,8 +102,28 @@ export interface DshSkillRegistry {
   register(skill: DshSkillRegistration): () => void;
 }
 
+export interface DshAgentHandle {
+  agent: {
+    id?: string;
+    ctx?: DshHostContext;
+    followup(input: {
+      content: Array<{ type: 'text'; text: string }>;
+      source: { kind: string };
+    }): void;
+    cancel?(cause: { kind: string }): void;
+    whenIdle(): Promise<void>;
+  };
+  dispose(): Promise<void>;
+}
+
 export interface DshAgentsService {
   list?(): unknown[];
+  create?(options: {
+    sessionId: string;
+    meta?: { cwd?: string };
+    agentOptions?: { provider?: string; model?: string };
+    setup?: (agentCtx: DshHostContext) => void | Promise<void>;
+  }): Promise<DshAgentHandle>;
 }
 
 export interface DshHostContext {
@@ -115,6 +135,7 @@ export interface DshHostContext {
   get<T = unknown>(key: string): T | undefined;
   effect(fn: () => void | (() => void | Promise<void>), label?: string): () => void;
   inject(deps: string[], callback: (ctx: DshHostContext) => void): () => void;
+  on?(event: string, listener: (...args: unknown[]) => void): () => void;
 }
 
 export interface DshClientLocale {
