@@ -2,3 +2,8 @@ export * from './language-detector.js';
 export * from './ripgrep.js';
 export * from './git-meta.js';
 export * from './scanner.js';
+export * from './parsers/wasm-loader.js';
+export * from './parsers/fallback-extractor.js';
+export * from './parsers/ast-extractor.js';
+export * from './disk-cache.js';
+export * from './symbol-index.js';
