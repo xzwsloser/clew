@@ -3,6 +3,7 @@ import type {
   ExplorationStep,
   FileTreeNode,
   ReadingPathRecord,
+  ReadingStatus,
   RepoOverview,
 } from '@clew/shared/contracts';
 
@@ -13,6 +14,7 @@ interface LeftRailProps {
   tree: FileTreeNode | null;
   overview: RepoOverview | null;
   activeFile: string | null;
+  fileStatuses: Record<string, ReadingStatus>;
   onOpenFile: (file: string, line?: number, action?: ExplorationStep['action'], symbolName?: string) => void;
   trail: ExplorationStep[];
   savedPaths: ReadingPathRecord[];
@@ -27,6 +29,7 @@ function TreeRow({
   node,
   depth,
   activeFile,
+  fileStatuses,
   expanded,
   onToggleDir,
   onOpenFile,
@@ -34,6 +37,7 @@ function TreeRow({
   node: FileTreeNode;
   depth: number;
   activeFile: string | null;
+  fileStatuses: Record<string, ReadingStatus>;
   expanded: Set<string>;
   onToggleDir: (path: string) => void;
   onOpenFile: (file: string) => void;
@@ -60,6 +64,7 @@ function TreeRow({
               node={child}
               depth={depth + 1}
               activeFile={activeFile}
+              fileStatuses={fileStatuses}
               expanded={expanded}
               onToggleDir={onToggleDir}
               onOpenFile={onOpenFile}
@@ -69,6 +74,7 @@ function TreeRow({
     );
   }
 
+  const status = fileStatuses[node.path];
   return (
     <button
       type="button"
@@ -79,6 +85,9 @@ function TreeRow({
     >
       <span className="clew-lang-dot" data-lang={node.language ?? 'text'} />
       <span className="clew-tree-name">{node.name}</span>
+      {status && status !== 'unread' && (
+        <span className={`clew-tree-status status-${status}`} title={status} />
+      )}
       {node.language && node.language !== 'text' && (
         <span className="clew-tree-lang">{node.language}</span>
       )}
@@ -91,6 +100,7 @@ export function LeftRail({
   tree,
   overview,
   activeFile,
+  fileStatuses,
   onOpenFile,
   trail,
   savedPaths,
@@ -139,6 +149,7 @@ export function LeftRail({
                 node={tree}
                 depth={0}
                 activeFile={activeFile}
+                fileStatuses={fileStatuses}
                 expanded={expandedDirs}
                 onToggleDir={toggleDir}
                 onOpenFile={(file) => onOpenFile(file, 1, 'open')}

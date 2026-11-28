@@ -433,3 +433,38 @@ export const ClewSseEventSchema = z.object({
   payload: z.record(z.string(), z.unknown()),
 });
 export type ClewSseEvent = z.infer<typeof ClewSseEventSchema>;
+
+export const ReadingStatusSchema = z.enum(['unread', 'understood', 'deep_dive', 'core_entry']);
+export type ReadingStatus = z.infer<typeof ReadingStatusSchema>;
+
+export const FileStatusRecordSchema = z.object({
+  id: z.string(),
+  repoId: z.string(),
+  file: z.string(),
+  status: ReadingStatusSchema,
+  updatedAt: z.string(),
+});
+export type FileStatusRecord = z.infer<typeof FileStatusRecordSchema>;
+
+export const SymbolPeekResultSchema = z.object({
+  found: z.boolean(),
+  symbol: SymbolRecordSchema.nullable(),
+  docComment: z.string().nullable(),
+  snippetLines: z.array(
+    z.object({
+      number: z.number().int().positive(),
+      text: z.string(),
+    }),
+  ),
+  totalLines: z.number().int().nonnegative(),
+});
+export type SymbolPeekResult = z.infer<typeof SymbolPeekResultSchema>;
+
+export const LineCommitInfoSchema = z.object({
+  sha: z.string(),
+  shortSha: z.string(),
+  author: z.string(),
+  date: z.string(),
+  subject: z.string(),
+});
+export type LineCommitInfo = z.infer<typeof LineCommitInfoSchema>;

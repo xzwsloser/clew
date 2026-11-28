@@ -11,9 +11,11 @@ import {
   ClewError,
   DiagnosticsSnapshotSchema,
   ExplorationStepSchema,
+  FileStatusRecordSchema,
   HealthCheckRequestSchema,
   HealthCheckResponseSchema,
   ReadingPathRecordSchema,
+  ReadingStatusSchema,
   RepoRecordSchema,
   type ClewSseEvent,
 } from '@clew/shared';
@@ -75,6 +77,7 @@ export async function apply(ctx: DshHostContext): Promise<void> {
       repos: z.infer<typeof RepoRecordSchema>;
       annotations: z.infer<typeof AnnotationRecordSchema>;
       paths: z.infer<typeof ReadingPathRecordSchema>;
+      statuses: z.infer<typeof FileStatusRecordSchema>;
     }
   > = await ctx.storageDomain.open({
     name: 'clew',
@@ -91,6 +94,7 @@ export async function apply(ctx: DshHostContext): Promise<void> {
       repos: { valueSchema: RepoRecordSchema },
       annotations: { valueSchema: AnnotationRecordSchema },
       paths: { valueSchema: ReadingPathRecordSchema },
+      statuses: { valueSchema: FileStatusRecordSchema },
     },
   });
 
@@ -118,6 +122,7 @@ export async function apply(ctx: DshHostContext): Promise<void> {
     domain.table('annotations'),
     domain.table('paths'),
     projects,
+    domain.table('statuses'),
   );
 
   const registeredSkills = CLEW_RUNTIME_SKILLS.map((s) => s.name);
@@ -383,6 +388,62 @@ export async function apply(ctx: DshHostContext): Promise<void> {
       case 'paths/delete': {
         const { id } = z.object({ id: z.string().min(1) }).parse(payload);
         return rpcOk({ deleted: await annotations.deleteReadingPath(id) });
+      }
+
+      case 'nav/peek': {
+        const parsed = z
+          .object({
+            repoId: z.string().min(1),
+            symbolName: z.string().min(1),
+            file: z.string().optional(),
+            line: z.number().int().positive().optional(),
+          })
+          .parse(payload);
+        return rpcOk({
+          peek: await projects.peekSymbol(
+            parsed.repoId,
+            parsed.symbolName,
+            parsed.file,
+            parsed.line ?? 1,
+          ),
+        });
+      }
+
+      case 'git/line-context': {
+        const parsed = z
+          .object({
+            repoId: z.string().min(1),
+            file: z.string().min(1),
+            startLine: z.number().int().positive(),
+            endLine: z.number().int().positive(),
+          })
+          .parse(payload);
+        return rpcOk({
+          commits: await projects.getLineGitContext(
+            parsed.repoId,
+            parsed.file,
+            parsed.startLine,
+            parsed.endLine,
+          ),
+        });
+      }
+
+      case 'status/list': {
+        const parsed = z.object({ repoId: z.string().min(1) }).parse(payload);
+        return rpcOk({ statuses: annotations.listFileStatuses(parsed.repoId) });
+      }
+
+      case 'status/set': {
+        const parsed = z
+          .object({
+            repoId: z.string().min(1),
+            file: z.string().min(1),
+            status: ReadingStatusSchema,
+          })
+          .parse(payload);
+        return rpcOk({
+          status: await annotations.setFileStatus(parsed.repoId, parsed.file, parsed.status),
+        });
       }
 
       case 'jobs/cancel': {

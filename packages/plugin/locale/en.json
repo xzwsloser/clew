@@ -78,7 +78,22 @@
       "annotate": "Annotate",
       "definition": "Definition",
       "references": "References",
-      "pin": "Pin"
+      "pin": "Pin",
+      "peek": "Peek",
+      "peekClose": "Close",
+      "openDef": "Open Definition",
+      "splitCompare": "Split Compare",
+      "closeSplit": "Close Split",
+      "splitPlaceholder": "Compare file...",
+      "gitHistory": "Git Line History",
+      "noGitHistory": "No commit history for selected lines.",
+      "statusLabel": "Status",
+      "status": {
+        "unread": "Unread",
+        "core_entry": "Core Entry",
+        "deep_dive": "Deep Dive",
+        "understood": "Understood"
+      }
     },
     "right": {
       "qa": "Ask AI",

@@ -3,7 +3,9 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import type {
   AnnotationRecord,
   OutlineNode,
+  ReadingStatus,
   SupportedLanguage,
+  SymbolPeekResult,
 } from '@clew/shared/contracts';
 import { tokenizeCodeLine } from '../syntax-highlight.js';
 
@@ -39,8 +41,16 @@ interface CodeReaderProps {
   onAskAi: (start: number, end: number) => void;
   onAnnotate: (start: number, end: number) => void;
   onGotoDefinition: (line: number, symbolName: string) => void;
+  onPeekSymbol: (line: number, symbolName: string) => void;
+  peekData: SymbolPeekResult | null;
+  onClosePeek: () => void;
+  onJumpToFileLine: (file: string, line: number, symbolName?: string) => void;
   onFindReferences: (symbolName: string) => void;
   onPinToTrail: (line: number, symbolName?: string) => void;
+  splitCompareFile: string | null;
+  onChangeSplitCompareFile: (file: string | null) => void;
+  fileStatuses: Record<string, ReadingStatus>;
+  onChangeFileStatus: (file: string, status: ReadingStatus) => void;
 }
 
 export function CodeReader({
@@ -61,11 +71,23 @@ export function CodeReader({
   onAskAi,
   onAnnotate,
   onGotoDefinition,
+  onPeekSymbol,
+  peekData,
+  onClosePeek,
+  onJumpToFileLine,
   onFindReferences,
   onPinToTrail,
+  splitCompareFile,
+  onChangeSplitCompareFile,
+  fileStatuses,
+  onChangeFileStatus,
 }: CodeReaderProps) {
   const scrollParentRef = useRef<HTMLDivElement | null>(null);
   const [symbolPick, setSymbolPick] = useState<string>('');
+  const compareTab = useMemo(
+    () => (splitCompareFile ? tabs.find((tb) => tb.file === splitCompareFile) ?? null : null),
+    [splitCompareFile, tabs],
+  );
 
   useEffect(() => {
     setSymbolPick('');
@@ -154,12 +176,41 @@ export function CodeReader({
             </button>
           </div>
         ))}
+        <div className="clew-tabs-actions">
+          <button
+            type="button"
+            className={`clew-btn-xs ${compareTab ? 'clew-btn-accent' : ''}`}
+            onClick={() => {
+              if (compareTab) {
+                onChangeSplitCompareFile(null);
+              } else {
+                const other = tabs.find((tb) => tb.file !== activeTab.file) ?? activeTab;
+                onChangeSplitCompareFile(other.file);
+              }
+            }}
+            data-testid="clew-split-compare-btn"
+          >
+            {compareTab ? t('ui.reader.closeSplit') : t('ui.reader.splitCompare')}
+          </button>
+        </div>
       </div>
 
-      {/* Breadcrumb & Outline */}
+      {/* Breadcrumb, Status Tag & Outline */}
       <div className="clew-reader-breadcrumb">
         <span className="clew-mono">{activeTab.file}</span>
         <div className="clew-outline-wrap">
+          <select
+            className={`clew-select-xs clew-status-select status-${fileStatuses[activeTab.file] ?? 'unread'}`}
+            value={fileStatuses[activeTab.file] ?? 'unread'}
+            onChange={(e) => onChangeFileStatus(activeTab.file, e.target.value as ReadingStatus)}
+            aria-label={t('ui.reader.statusLabel')}
+            data-testid="clew-file-status-select"
+          >
+            <option value="unread">{t('ui.reader.status.unread')}</option>
+            <option value="core_entry">{t('ui.reader.status.core_entry')}</option>
+            <option value="deep_dive">{t('ui.reader.status.deep_dive')}</option>
+            <option value="understood">{t('ui.reader.status.understood')}</option>
+          </select>
           {activeTab.outline.length > 0 && (
             <select
               className="clew-select-xs"
@@ -219,6 +270,15 @@ export function CodeReader({
             type="button"
             className="clew-btn-xs"
             disabled={!activeWord}
+            onClick={() => onPeekSymbol(selectedRange.start, activeWord)}
+            data-testid="clew-peek-btn"
+          >
+            {t('ui.reader.peek')}
+          </button>
+          <button
+            type="button"
+            className="clew-btn-xs"
+            disabled={!activeWord}
             onClick={() => onGotoDefinition(selectedRange.start, activeWord)}
             data-testid="clew-goto-def-btn"
           >
@@ -243,8 +303,47 @@ export function CodeReader({
         </div>
       )}
 
-      {/* Virtualized Code Lines */}
-      <div ref={scrollParentRef} className="clew-code-scroll">
+      {/* Non-blocking Data Structure / Symbol Peek Card */}
+      {peekData && peekData.found && peekData.symbol && (
+        <div className="clew-peek-card" data-testid="clew-peek-card">
+          <div className="clew-section-header">
+            <div className="clew-btn-row">
+              <span className="clew-badge-subtle">{peekData.symbol.kind}</span>
+              <span className="clew-mono clew-item-title">{peekData.symbol.qualifiedName}</span>
+              <span className="clew-item-sub clew-mono">
+                {peekData.symbol.file}:{peekData.symbol.startLine}
+              </span>
+            </div>
+            <div className="clew-btn-row">
+              <button
+                type="button"
+                className="clew-btn-xs clew-btn-primary"
+                onClick={() => {
+                  onJumpToFileLine(
+                    peekData.symbol!.file,
+                    peekData.symbol!.startLine,
+                    peekData.symbol!.qualifiedName,
+                  );
+                  onClosePeek();
+                }}
+              >
+                {t('ui.reader.openDef')}
+              </button>
+              <button type="button" className="clew-text-btn" onClick={onClosePeek}>
+                {t('ui.reader.peekClose')}
+              </button>
+            </div>
+          </div>
+          {peekData.docComment && <div className="clew-peek-doc">{peekData.docComment}</div>}
+          <pre className="clew-code-snippet">
+            {peekData.snippetLines.map((ln) => `${String(ln.number).padStart(4, ' ')}  ${ln.text}`).join('\n')}
+          </pre>
+        </div>
+      )}
+
+      {/* Virtualized Code Lines (with optional Side-by-Side Split Compare) */}
+      <div className={compareTab ? 'clew-split-code-grid' : 'clew-single-code-grid'}>
+        <div ref={scrollParentRef} className="clew-code-scroll">
         <div
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
@@ -315,6 +414,46 @@ export function CodeReader({
             );
           })}
         </div>
+        </div>
+        {compareTab && (
+          <div className="clew-compare-pane" data-testid="clew-compare-pane">
+            <div className="clew-compare-header">
+              <select
+                className="clew-select-xs"
+                value={compareTab.file}
+                onChange={(e) => onChangeSplitCompareFile(e.target.value || null)}
+                aria-label={t('ui.reader.splitCompare')}
+              >
+                {tabs.map((tb) => (
+                  <option key={tb.file} value={tb.file}>
+                    {tb.file}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                className="clew-text-btn"
+                onClick={() => onChangeSplitCompareFile(null)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="clew-compare-scroll">
+              {compareTab.lines.slice(0, 600).map((ln) => (
+                <div key={ln.number} className="clew-code-line">
+                  <span className="clew-line-num">{ln.number}</span>
+                  <span className="clew-line-code">
+                    {tokenizeCodeLine(ln.text, compareTab.language).map((tok, idx) => (
+                      <span key={idx} className={`clew-tok-${tok.kind}`}>
+                        {tok.text}
+                      </span>
+                    ))}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

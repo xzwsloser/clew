@@ -4,7 +4,9 @@ import {
   ClewError,
   type AnnotationRecord,
   type ExplorationStep,
+  type FileStatusRecord,
   type ReadingPathRecord,
+  type ReadingStatus,
 } from '@clew/shared';
 import { readFileSpan } from '@clew/engine';
 import type { DshKvTable } from '../../types/dsh.js';
@@ -19,6 +21,7 @@ export class AnnotationService {
     private readonly annotationsTable: DshKvTable<AnnotationRecord>,
     private readonly pathsTable: DshKvTable<ReadingPathRecord>,
     private readonly projects: ProjectService,
+    private readonly statusesTable?: DshKvTable<FileStatusRecord>,
   ) {}
 
   listAnnotations(repoId: string, file?: string): AnnotationRecord[] {
@@ -201,5 +204,33 @@ export class AnnotationService {
 
   async deleteReadingPath(id: string): Promise<boolean> {
     return this.pathsTable.delete(id);
+  }
+
+  listFileStatuses(repoId: string): FileStatusRecord[] {
+    if (!this.statusesTable) return [];
+    const items: FileStatusRecord[] = [];
+    for (const [, rec] of this.statusesTable.entries()) {
+      if (rec.repoId === repoId) items.push(rec);
+    }
+    return items.sort((a, b) => a.file.localeCompare(b.file));
+  }
+
+  async setFileStatus(repoId: string, file: string, status: ReadingStatus): Promise<FileStatusRecord> {
+    const id = `${repoId}:${file}`;
+    const record: FileStatusRecord = {
+      id,
+      repoId,
+      file,
+      status,
+      updatedAt: new Date().toISOString(),
+    };
+    if (this.statusesTable) {
+      if (status === 'unread') {
+        await this.statusesTable.delete(id);
+      } else {
+        await this.statusesTable.put(id, record);
+      }
+    }
+    return record;
   }
 }

@@ -78,7 +78,22 @@
       "annotate": "批注",
       "definition": "跳定义",
       "references": "查引用",
-      "pin": "加入轨迹"
+      "pin": "加入轨迹",
+      "peek": "结构速览",
+      "peekClose": "关闭",
+      "openDef": "打开定义",
+      "splitCompare": "双栏对照",
+      "closeSplit": "退出分栏",
+      "splitPlaceholder": "选择对照文件...",
+      "gitHistory": "行级提交历史",
+      "noGitHistory": "当前代码行暂无提交历史记录。",
+      "statusLabel": "阅读状态",
+      "status": {
+        "unread": "未标记",
+        "core_entry": "核心入口",
+        "deep_dive": "深入研读",
+        "understood": "已理解"
+      }
     },
     "right": {
       "qa": "上下文问答",

@@ -7,11 +7,13 @@ import {
   type FuzzyItem,
   type ReferenceHit,
   type SearchHit,
+  type SymbolPeekResult,
   type SymbolRecord,
 } from '@clew/shared';
 import { detectLanguage } from './language-detector.js';
 import { classifyPositionsWithAst } from './parsers/ast-extractor.js';
 import { searchWithRipgrep, type RipgrepSearchOptions } from './ripgrep.js';
+import { readFileSpan } from './scanner.js';
 import type { RepositoryIndex } from './symbol-index.js';
 
 export interface GoToDefinitionInput {
@@ -271,4 +273,58 @@ export async function globalTextSearch(
     lineText: m.lineText,
     language: detectLanguage(m.file),
   }));
+}
+
+const TYPE_KINDS = new Set<SymbolRecord['kind']>(['struct', 'class', 'interface', 'type', 'enum']);
+
+/**
+ * Preview a symbol definition (struct/class/interface/function) with leading comments & body snippet.
+ */
+export async function peekSymbolPreview(
+  index: RepositoryIndex,
+  symbolName: string,
+  fromFile?: string,
+  fromLine = 1,
+): Promise<SymbolPeekResult> {
+  const cleanName = symbolName.trim();
+  if (!cleanName) {
+    return { found: false, symbol: null, docComment: null, snippetLines: [], totalLines: 0 };
+  }
+
+  let bestSymbol: SymbolRecord | undefined;
+  if (fromFile) {
+    const defResult = goToDefinition(index, { file: fromFile, line: fromLine, symbolName: cleanName });
+    const sorted = [...defResult.candidates].sort((a, b) => {
+      const aTypeBonus = TYPE_KINDS.has(a.symbol.kind) ? 5 : 0;
+      const bTypeBonus = TYPE_KINDS.has(b.symbol.kind) ? 5 : 0;
+      return b.score + bTypeBonus - (a.score + aTypeBonus);
+    });
+    bestSymbol = sorted[0]?.symbol;
+  } else {
+    const matches = index.symbolsByName.get(cleanName) ?? [];
+    bestSymbol = matches.find((s) => TYPE_KINDS.has(s.kind)) ?? matches[0];
+  }
+
+  if (!bestSymbol) {
+    return { found: false, symbol: null, docComment: null, snippetLines: [], totalLines: 0 };
+  }
+
+  const contextStart = Math.max(1, bestSymbol.startLine - 4);
+  const previewEnd = Math.min(Math.max(bestSymbol.endLine, bestSymbol.startLine + 14), bestSymbol.startLine + 18);
+  const span = await readFileSpan(index.repoRoot, bestSymbol.file, contextStart, previewEnd);
+
+  const leadingCommentLines = span.lines
+    .filter((l) => l.number < bestSymbol.startLine)
+    .map((l) => l.text.trim())
+    .filter((txt) => /^(\/\/|\/\*|\*|#|""")/.test(txt));
+
+  const bodyLines = span.lines.filter((l) => l.number >= bestSymbol.startLine);
+
+  return {
+    found: true,
+    symbol: bestSymbol,
+    docComment: leadingCommentLines.length > 0 ? leadingCommentLines.join('\n') : null,
+    snippetLines: bodyLines,
+    totalLines: span.totalLines,
+  };
 }

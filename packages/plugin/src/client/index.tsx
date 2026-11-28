@@ -4,14 +4,18 @@ import type {
   DefinitionCandidate,
   DefinitionResult,
   ExplorationStep,
+  FileStatusRecord,
   FileTreeNode,
   JobState,
+  LineCommitInfo,
   OutlineNode,
   ReadingPathRecord,
+  ReadingStatus,
   ReferenceHit,
   RepoOverview,
   RepoRecord,
   SupportedLanguage,
+  SymbolPeekResult,
   TraceGraph,
   TraceNode,
 } from '@clew/shared/contracts';
@@ -103,6 +107,10 @@ function ClewWorkbench({ ctx, t }: { ctx: DshClientContext; t: (key: string) => 
   const [showGlobalSearch, setShowGlobalSearch] = useState(false);
   const [showDiagnostics, setShowDiagnostics] = useState(false);
   const [peekCandidates, setPeekCandidates] = useState<DefinitionCandidate[] | null>(null);
+  const [peekData, setPeekData] = useState<SymbolPeekResult | null>(null);
+  const [splitCompareFile, setSplitCompareFile] = useState<string | null>(null);
+  const [fileStatuses, setFileStatuses] = useState<Record<string, ReadingStatus>>({});
+  const [lineCommits, setLineCommits] = useState<LineCommitInfo[]>([]);
 
   useEffect(() => {
     return ctx.locale.subscribe(() => {
@@ -111,17 +119,25 @@ function ClewWorkbench({ ctx, t }: { ctx: DshClientContext; t: (key: string) => 
   }, [ctx]);
 
   const loadRepoWorkspace = useCallback(async (repoId: string) => {
-    const [treeRes, ovRes, annRes, pathRes] = await Promise.all([
+    const [treeRes, ovRes, annRes, pathRes, statusRes] = await Promise.all([
       callClewRpc<{ tree: FileTreeNode }>('repo/tree', { repoId }),
       callClewRpc<{ overview: RepoOverview }>('repo/overview', { repoId }),
       callClewRpc<{ annotations: AnnotationRecord[] }>('annotations/list', { repoId }),
       callClewRpc<{ paths: ReadingPathRecord[] }>('paths/list', { repoId }),
+      callClewRpc<{ statuses: FileStatusRecord[] }>('status/list', { repoId }),
     ]);
 
     if (treeRes.ok) setTree(treeRes.value.tree);
     if (ovRes.ok) setOverview(ovRes.value.overview);
     if (annRes.ok) setAnnotations(annRes.value.annotations);
     if (pathRes.ok) setSavedPaths(pathRes.value.paths);
+    if (statusRes.ok) {
+      const nextMap: Record<string, ReadingStatus> = {};
+      for (const item of statusRes.value.statuses) {
+        nextMap[item.file] = item.status;
+      }
+      setFileStatuses(nextMap);
+    }
   }, []);
 
   const refreshRepoList = useCallback(
@@ -266,6 +282,7 @@ function ClewWorkbench({ ctx, t }: { ctx: DshClientContext; t: (key: string) => 
         setShowImportModal(false);
         setShowDiagnostics(false);
         setPeekCandidates(null);
+        setPeekData(null);
       }
     };
     window.addEventListener('keydown', onKeyDown);
@@ -346,6 +363,46 @@ function ClewWorkbench({ ctx, t }: { ctx: DshClientContext; t: (key: string) => 
     },
     [activeRepoId, activeFile, openFileAt],
   );
+
+  const handlePeekSymbol = useCallback(
+    async (line: number, symbolName: string) => {
+      if (!activeRepoId || !activeFile) return;
+      const res = await callClewRpc<{ peek: SymbolPeekResult }>('nav/peek', {
+        repoId: activeRepoId,
+        file: activeFile,
+        line,
+        symbolName,
+      });
+      if (!res.ok) {
+        setErrorBanner(`${res.error.code}: ${res.error.message}`);
+        return;
+      }
+      if (!res.value.peek.found) {
+        setErrorBanner(`No symbol preview found for "${symbolName}".`);
+        return;
+      }
+      setPeekData(res.value.peek);
+    },
+    [activeRepoId, activeFile],
+  );
+
+  useEffect(() => {
+    if (!activeRepoId || !activeFile || !selectedRange) {
+      setLineCommits([]);
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      void callClewRpc<{ commits: LineCommitInfo[] }>('git/line-context', {
+        repoId: activeRepoId,
+        file: activeFile,
+        startLine: selectedRange.start,
+        endLine: selectedRange.end,
+      }).then((res) => {
+        if (res.ok) setLineCommits(res.value.commits);
+      });
+    }, 180);
+    return () => window.clearTimeout(timer);
+  }, [activeRepoId, activeFile, selectedRange]);
 
   const handleFindReferences = useCallback(
     async (symbolName: string) => {
@@ -438,6 +495,9 @@ function ClewWorkbench({ ctx, t }: { ctx: DshClientContext; t: (key: string) => 
           setActiveRepoId(id);
           setTabs([]);
           setActiveFile(null);
+          setSplitCompareFile(null);
+          setPeekData(null);
+          setLineCommits([]);
           setTrace(null);
           void loadRepoWorkspace(id);
         }}
@@ -476,6 +536,7 @@ function ClewWorkbench({ ctx, t }: { ctx: DshClientContext; t: (key: string) => 
                 tree={tree}
                 overview={overview}
                 activeFile={activeFile}
+                fileStatuses={fileStatuses}
                 onOpenFile={(f, ln, act, sym) => void openFileAt(f, ln ?? 1, act ?? 'open', sym)}
                 trail={trail}
                 savedPaths={savedPaths}
@@ -557,6 +618,9 @@ function ClewWorkbench({ ctx, t }: { ctx: DshClientContext; t: (key: string) => 
                     if (activeFile === file) {
                       setActiveFile(remaining[0]?.file ?? null);
                     }
+                    if (splitCompareFile === file) {
+                      setSplitCompareFile(null);
+                    }
                     return remaining;
                   });
                 }}
@@ -580,10 +644,24 @@ function ClewWorkbench({ ctx, t }: { ctx: DshClientContext; t: (key: string) => 
                   setRightTab('annotations');
                 }}
                 onGotoDefinition={(line, sym) => void handleGotoDefinition(line, sym)}
+                onPeekSymbol={(line, sym) => void handlePeekSymbol(line, sym)}
+                peekData={peekData}
+                onClosePeek={() => setPeekData(null)}
+                onJumpToFileLine={(file, line, sym) =>
+                  void openFileAt(file, line, 'definition', sym)
+                }
                 onFindReferences={(sym) => void handleFindReferences(sym)}
                 onPinToTrail={(line, sym) => {
                   if (!activeFile) return;
                   void openFileAt(activeFile, line, 'open', sym, false);
+                }}
+                splitCompareFile={splitCompareFile}
+                onChangeSplitCompareFile={setSplitCompareFile}
+                fileStatuses={fileStatuses}
+                onChangeFileStatus={(file, status) => {
+                  if (!activeRepoId) return;
+                  setFileStatuses((prev) => ({ ...prev, [file]: status }));
+                  void callClewRpc('status/set', { repoId: activeRepoId, file, status });
                 }}
               />
             </div>
@@ -661,6 +739,7 @@ function ClewWorkbench({ ctx, t }: { ctx: DshClientContext; t: (key: string) => 
                 }}
                 references={references}
                 activeReferenceSymbol={activeRefSymbol}
+                lineCommits={lineCommits}
               />
             </div>
           </>

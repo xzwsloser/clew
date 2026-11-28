@@ -1015,4 +1015,96 @@ body[data-ds-dark-theme] .clew-root {
   background: rgba(185, 28, 28, 0.1);
   font-size: 12px;
 }
+
+.clew-tabs-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+
+.clew-peek-card {
+  margin: 6px 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--clew-accent-primary);
+  background: var(--clew-bg-elevated);
+  flex-shrink: 0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.clew-peek-doc {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--clew-text-secondary);
+  white-space: pre-wrap;
+}
+
+.clew-single-code-grid {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.clew-split-code-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+.clew-compare-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-left: 1px solid var(--clew-border-strong);
+  background: var(--clew-bg-code);
+}
+
+.clew-compare-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--clew-border-subtle);
+  background: var(--clew-bg-surface);
+}
+
+.clew-compare-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 4px 0;
+}
+
+.clew-status-select.status-core_entry {
+  border-color: var(--clew-accent-primary);
+  color: var(--clew-accent-primary);
+}
+
+.clew-status-select.status-deep_dive {
+  border-color: var(--clew-accent-inferred);
+  color: var(--clew-accent-inferred);
+}
+
+.clew-status-select.status-understood {
+  border-color: var(--clew-accent-verified);
+  color: var(--clew-accent-verified);
+}
+
+.clew-tree-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.clew-tree-status.status-core_entry { background: var(--clew-accent-primary); }
+.clew-tree-status.status-deep_dive { background: var(--clew-accent-inferred); }
+.clew-tree-status.status-understood { background: var(--clew-accent-verified); }
 `;

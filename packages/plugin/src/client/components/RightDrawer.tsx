@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type {
   AnnotationRecord,
+  LineCommitInfo,
   ReferenceHit,
   TraceGraph,
   TraceNode,
@@ -41,6 +42,7 @@ interface RightDrawerProps {
   onRevalidateAnnotations: () => void;
   references: ReferenceHit[];
   activeReferenceSymbol: string | null;
+  lineCommits: LineCommitInfo[];
 }
 
 export function RightDrawer({
@@ -62,6 +64,7 @@ export function RightDrawer({
   onRevalidateAnnotations,
   references,
   activeReferenceSymbol,
+  lineCommits,
 }: RightDrawerProps) {
   const [questionInput, setQuestionInput] = useState('');
   const [annTitle, setAnnTitle] = useState('');
@@ -342,6 +345,24 @@ export function RightDrawer({
                 )}
               </div>
             )}
+
+            <div className="clew-section" data-testid="clew-git-history">
+              <div className="clew-section-title">{t('ui.reader.gitHistory')}</div>
+              {lineCommits.length === 0 ? (
+                <p className="clew-empty-hint">{t('ui.reader.noGitHistory')}</p>
+              ) : (
+                lineCommits.map((c) => (
+                  <div key={c.sha} className="clew-mini-card">
+                    <div className="clew-section-header">
+                      <span className="clew-mono">{c.shortSha}</span>
+                      <span className="clew-item-sub">{c.date.slice(0, 10)}</span>
+                    </div>
+                    <div className="clew-item-title">{c.subject}</div>
+                    <div className="clew-item-sub">{c.author}</div>
+                  </div>
+                ))
+              )}
+            </div>
 
             <div className="clew-section">
               <div className="clew-section-title">{t('ui.evidence.edgesTitle')}</div>

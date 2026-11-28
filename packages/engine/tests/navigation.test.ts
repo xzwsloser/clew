@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -8,6 +9,8 @@ import {
   fuzzySearchFilesAndSymbols,
   globalTextSearch,
   goToDefinition,
+  peekSymbolPreview,
+  readLineGitContext,
 } from '../src/index.js';
 
 describe('@clew/engine zero-config navigation & search', () => {
@@ -67,6 +70,45 @@ describe('@clew/engine zero-config navigation & search', () => {
         caseSensitive: true,
       });
       expect(textHits.length).toBeGreaterThanOrEqual(4);
+    } finally {
+      rmSync(repo, { recursive: true, force: true });
+    }
+  });
+
+  it('previews struct/interface symbols via peekSymbolPreview and reads git line commit context safely', async () => {
+    const repo = mkdtempSync(join(tmpdir(), 'clew-p1-nav-'));
+    try {
+      mkdirSync(join(repo, 'src'), { recursive: true });
+      writeFileSync(
+        join(repo, 'src', 'types.ts'),
+        [
+          '// Core engine configuration record',
+          'export interface EngineConfig {',
+          '  maxDepth: number;',
+          '  cacheDir: string;',
+          '}',
+        ].join('\n'),
+      );
+      execFileSync('git', ['-C', repo, 'init', '-b', 'main'], { stdio: 'ignore' });
+      execFileSync('git', ['-C', repo, 'config', 'user.email', 'test@example.com'], { stdio: 'ignore' });
+      execFileSync('git', ['-C', repo, 'config', 'user.name', 'Test User'], { stdio: 'ignore' });
+      execFileSync('git', ['-C', repo, 'add', 'src/types.ts'], { stdio: 'ignore' });
+      execFileSync('git', ['-C', repo, 'commit', '-m', 'feat: add EngineConfig'], { stdio: 'ignore' });
+
+      const index = await buildRepositoryIndex(repo);
+      const peek = await peekSymbolPreview(index, 'EngineConfig', 'src/types.ts', 2);
+      expect(peek.found).toBe(true);
+      expect(peek.symbol?.kind).toBe('interface');
+      expect(peek.docComment).toContain('Core engine configuration record');
+      expect(peek.snippetLines.some((l) => l.text.includes('maxDepth'))).toBe(true);
+
+      const commits = await readLineGitContext(repo, 'src/types.ts', 2, 4);
+      expect(commits.length).toBe(1);
+      expect(commits[0]?.subject).toBe('feat: add EngineConfig');
+      expect(commits[0]?.author).toBe('Test User');
+
+      const unsafe = await readLineGitContext(repo, '../../etc/passwd', 1, 2);
+      expect(unsafe).toEqual([]);
     } finally {
       rmSync(repo, { recursive: true, force: true });
     }

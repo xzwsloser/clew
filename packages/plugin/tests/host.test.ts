@@ -210,6 +210,38 @@ describe('@clew/dsh-plugin host services, tools & runtime skills', () => {
       });
       expect(savedPath.ok && savedPath.value.path.steps.length).toBe(1);
 
+      // P1: Peek symbol + Git line context + Reading status tags
+      const peek = await stub.callRpc<{ peek: { found: boolean; symbol?: { name: string } } }>('nav/peek', {
+        repoId,
+        file: 'src/api.ts',
+        line: 2,
+        symbolName: 'queryUser',
+      });
+      expect(peek.ok && peek.value.peek.found).toBe(true);
+      expect(peek.ok && peek.value.peek.symbol?.name).toBe('queryUser');
+
+      const gitCtx = await stub.callRpc<{ commits: unknown[] }>('git/line-context', {
+        repoId,
+        file: 'src/api.ts',
+        startLine: 1,
+        endLine: 3,
+      });
+      expect(gitCtx.ok).toBe(true);
+      expect(Array.isArray(gitCtx.ok && gitCtx.value.commits)).toBe(true);
+
+      const statusSet = await stub.callRpc<{ status: { status: string; file: string } }>('status/set', {
+        repoId,
+        file: 'src/api.ts',
+        status: 'core_entry',
+      });
+      expect(statusSet.ok && statusSet.value.status.status).toBe('core_entry');
+
+      const statusList = await stub.callRpc<{ statuses: Array<{ file: string; status: string }> }>(
+        'status/list',
+        { repoId },
+      );
+      expect(statusList.ok && statusList.value.statuses[0]?.status).toBe('core_entry');
+
       // Diagnostics check
       const diag = await stub.callRpc<{ reposCount: number; annotationsCount: number; readingPathsCount: number }>(
         'diagnostics',

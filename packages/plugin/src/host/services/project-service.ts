@@ -9,11 +9,13 @@ import {
   type DefinitionResult,
   type FileTreeNode,
   type FuzzyItem,
+  type LineCommitInfo,
   type OutlineNode,
   type ReferenceHit,
   type RepoOverview,
   type RepoRecord,
   type SearchHit,
+  type SymbolPeekResult,
 } from '@clew/shared';
 import {
   buildRepoOverview,
@@ -24,8 +26,10 @@ import {
   globalTextSearch,
   goToDefinition,
   measureCacheDirectory,
+  peekSymbolPreview,
   readFileSpan,
   readGitMetadata,
+  readLineGitContext,
   type FileSpanResult,
   type RepositoryIndex,
 } from '@clew/engine';
@@ -212,6 +216,26 @@ export class ProjectService {
   ): Promise<DefinitionResult> {
     const index = await this.ensureIndex(repoId);
     return goToDefinition(index, { file, line, column, symbolName });
+  }
+
+  async peekSymbol(
+    repoId: string,
+    symbolName: string,
+    fromFile?: string,
+    fromLine = 1,
+  ): Promise<SymbolPeekResult> {
+    const index = await this.ensureIndex(repoId);
+    return peekSymbolPreview(index, symbolName, fromFile, fromLine);
+  }
+
+  async getLineGitContext(
+    repoId: string,
+    file: string,
+    startLine: number,
+    endLine: number,
+  ): Promise<LineCommitInfo[]> {
+    const rec = this.getRepo(repoId);
+    return readLineGitContext(rec.rootPath, file, startLine, endLine);
   }
 
   async findRefs(repoId: string, symbolName: string, maxResults = 150): Promise<ReferenceHit[]> {

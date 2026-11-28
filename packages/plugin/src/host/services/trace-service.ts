@@ -3,6 +3,7 @@ import type { TraceGraph } from '@clew/shared';
 import {
   estimateTokens,
   readFileSpan,
+  readLineGitContext,
   retrieveSubgraph,
   trimToTokenBudget,
   verifyTraceEvidence,
@@ -201,10 +202,16 @@ export class TraceService {
       maxNodes: 8,
       maxDepth: 2,
     });
+    const commits = await readLineGitContext(index.repoRoot, span.path, span.startLine, span.endLine);
+    const gitSummary =
+      commits.length > 0
+        ? commits.slice(0, 3).map((c) => `${c.shortSha} (${c.author}): ${c.subject}`).join('; ')
+        : null;
 
     const promptText =
       `Question: ${input.question}\n` +
       (input.goal ? `Active reading goal: ${input.goal}\n` : '') +
+      (gitSummary ? `Recent line commits: ${gitSummary}\n` : '') +
       `<untrusted_source path="${span.path}" lines="${span.startLine}-${span.endLine}">\n${selectedCode}\n</untrusted_source>`;
 
     const agentOutput = await this.tryHostAgentAnalysis(
@@ -245,6 +252,7 @@ export class TraceService {
               .map((e) => `\`${e.label ?? e.target}\` (${e.confidence})`)
               .join(', ')}`
           : '- **Observed Calls**: No outgoing AST call edges detected inside this span.',
+        ...(gitSummary ? [`- **Recent Commits**: ${gitSummary}`] : []),
         `\n*(Answered deterministically from AST index & source evidence; connect DeepSeek credentials in DSH for model synthesis.)*`,
       ].join('\n');
 

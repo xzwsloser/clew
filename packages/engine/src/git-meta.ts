@@ -1,7 +1,8 @@
 import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { relative } from 'node:path';
 import { promisify } from 'node:util';
-import type { GitMetadata } from '@clew/shared';
+import { resolveSafeRepoPath, type GitMetadata, type LineCommitInfo } from '@clew/shared';
 
 const execFileAsync = promisify(execFile);
 
@@ -82,4 +83,51 @@ export async function listGitChangedFiles(
     }
   }
   return results;
+}
+
+/**
+ * Safely read up to 5 recent Git commits touching a line range (`git log -L`) in read-only mode.
+ */
+export async function readLineGitContext(
+  repoRoot: string,
+  relativeFile: string,
+  startLine: number,
+  endLine: number,
+  signal?: AbortSignal,
+): Promise<LineCommitInfo[]> {
+  let cleanRel: string;
+  try {
+    const abs = resolveSafeRepoPath(repoRoot, relativeFile);
+    cleanRel = relative(repoRoot, abs).replaceAll('\\', '/');
+    if (!cleanRel || cleanRel.startsWith('..')) return [];
+  } catch {
+    return [];
+  }
+
+  const start = Math.max(1, Math.floor(startLine));
+  const end = Math.max(start, Math.floor(endLine));
+  const out = await runGit(
+    repoRoot,
+    [
+      'log',
+      '-n',
+      '5',
+      '--no-patch',
+      '--format=%H%x1f%h%x1f%an%x1f%aI%x1f%s',
+      '-L',
+      `${start},${end}:${cleanRel}`,
+    ],
+    signal,
+  );
+  if (!out) return [];
+
+  const commits: LineCommitInfo[] = [];
+  for (const line of out.split('\n')) {
+    if (!line.includes('\x1f')) continue;
+    const [sha, shortSha, author, date, subject] = line.split('\x1f');
+    if (sha && shortSha && author && date && subject !== undefined) {
+      commits.push({ sha, shortSha, author, date, subject });
+    }
+  }
+  return commits;
 }
