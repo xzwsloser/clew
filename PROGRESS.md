@@ -1,9 +1,9 @@
 # PROGRESS.md — Session Recovery & Live Status
 
-- **Current Version**: `0.0.1-dev`
-- **Active Milestone**: `M9 — Clean Install, Bilingual Docs, Release Assets & GitHub Pages`
-- **Active Branch**: `develop`
-- **Last Stable Commit**: `M8 P1 features, two-round Impeccable browser visual review & real screenshots`
+- **Current Version**: `0.1.0`
+- **Active Milestone**: `M9 Complete — Release v0.1.0 Ready`
+- **Active Branch**: `main` / `develop`
+- **Last Stable Commit**: `Clew v0.1.0 P0 + P1 release`
 
 ## Completed
 - Verified workspace `/home/xzw/projects/clew` is clean and empty.
@@ -21,17 +21,18 @@
 
 - **M8**: Implemented P1 features (`nav/peek` Symbol Peek Card, read-only `git/line-context` commit history integrated into Evidence & Ask AI, Dual-Pane Split Compare & persisted Reading Status tags in `statuses` KV table) with regression tests; completed Round 1 & Round 2 real browser visual reviews across `1280×800`, `1440×900`, `1920×1080`, Dark/Light, EN/ZH; saved verified real screenshots to `docs/screenshots/` and documented fixes + a11y/perf/security audits in `docs/UI-REVIEW.md`.
 
+- **M9**: Passed clean-environment `dsh plugin add` / `list` / `dsh web` / `remove` lifecycle test; authored bilingual `README.md` & `README.zh-CN.md` (with real screenshots), `CHANGELOG.md`, `CONTRIBUTING.md`, `docs/release/DSH-PLUGIN-SUBMISSION.md`; synced `DESIGN.md` & `docs/ARCHITECTURE.md`; built and visually verified GitHub Pages static homepage (`website/` + `.github/workflows/pages.yml`) at desktop (`1440×900`) and mobile (`390×844`) across Dark/Light & EN/ZH (`0` console/HTTP errors, `0` horizontal overflow).
+
 ## In Progress
-- **M9**: Clean-environment `dsh plugin add`/`remove` test, bilingual `README.md`/`README.zh-CN.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `docs/release/DSH-PLUGIN-SUBMISSION.md`, and GitHub Pages static `website/`.
+- None (`v0.1.0` shipped).
 
 ## Latest Test Results
 - `pnpm run build && pnpm run typecheck && pnpm run lint && pnpm run test`: 8 test files, 14 tests passing (`@clew/shared`, `@clew/engine`, `@clew/dsh-plugin`).
-- Round 2 live `dsh web` browser verification: 0 console errors, 0 HTTP 4xx/5xx across 50 requests, all 9 Round 1 UI defects verified resolved.
+- Real OSS E2E Validation (`ripgrep`, `gin`, `llama.cpp`): 100% warm cache hit reuse, 0 console/HTTP errors.
+- Round 2 Workbench & Website Browser Verifications: 0 console errors, 0 HTTP 4xx/5xx responses.
 
 ## Blockers & Technical Debt
 - None.
 
 ## Next Actions
-1. Run clean-environment `dsh plugin add` / `remove` test and clean `/tmp/clew-validation-repos`.
-2. Author bilingual `README.md`, `README.zh-CN.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `docs/release/DSH-PLUGIN-SUBMISSION.md`, and sync `docs/ARCHITECTURE.md` / `DESIGN.md`.
-3. Build & visually verify `website/` static GitHub Pages homepage + `.github/workflows/pages.yml`, run final full verification, merge `develop` -> `main`, tag `v0.1.0`, and push to GitHub.
+1. Maintain `v0.1.0` on `main` and iterate P2 features (optional local LSP augmentation, multi-repo linking) on `develop`.

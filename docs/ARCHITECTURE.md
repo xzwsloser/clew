@@ -52,9 +52,9 @@ flowchart TB
         ParserReg["Pluggable LanguageParser Registry"]
         WasmParsers["WASM Tree-sitter Parsers\n(Py / C / C++ / Go / Rust / TS / JS)"]
         RgFallback["Ripgrep Text & Word-Boundary Fallback"]
-        Nav["Zero-Config Navigation\n(Go-to-Def / Find-Refs / Outline)"]
+        Nav["Zero-Config Navigation\n(Go-to-Def / Find-Refs / Peek / Git Line Context)"]
         Graph["Subgraph Retriever & Token Budget Trimmer"]
-        Verifier["Reverse Source-Line Evidence Verifier"]
+        Verifier["Reverse Source-Line Evidence Verifier & Dedupe"]
 
         Scanner --> ParserReg
         ParserReg --> WasmParsers

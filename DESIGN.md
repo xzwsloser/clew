@@ -71,13 +71,13 @@ flowchart TD
 
     Columns --> Center["Center Workspace (Dominant >=55%)"]
     Center --> CTop["TraceGraphCanvas (ELK Web Worker Layout, Zoom/Pan, Group, Edge Filter)"]
-    Center --> CBot["ReadOnlyCodeReader (Tabs, Breadcrumb, Outline, Virtualized Lines, Semantic Highlights, Floating Selection Toolbar)"]
-    Center --> CModal["Overlays: CommandPalette / GlobalSearch / PeekDefinitionsModal"]
+    Center --> CBot["ReadOnlyCodeReader (Tabs, Split Compare, Status Tags, Peek Card, Virtualized Lines, Selection Toolbar)"]
+    Center --> CModal["Overlays: CommandPalette / GlobalSearch / PeekDefinitionsModal / DiagnosticsModal"]
 
     Columns --> Right["Right Context Drawer (280-420px, collapsible)"]
-    Right --> R1["Contextual Ask-AI & Node Explanation (Clickable Citations)"]
+    Right --> R1["Contextual Ask-AI & Safe Markdown Narrative (Clickable Citations, Sticky Composer)"]
     Right --> R2["Line Annotations Thread (Create / Edit / Resolve / Anchor Status)"]
-    Right --> R3["Dataflow & Evidence Inspector (Edge Confidence Breakdown)"]
+    Right --> R3["Git Line History & Graph Evidence Inspector"]
 ```
 
 ---
