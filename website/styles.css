@@ -463,6 +463,60 @@ kbd {
   background: var(--bg-elevated);
 }
 
+.companion-grid {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  align-items: center;
+  gap: 36px;
+}
+
+.companion-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border-radius: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+}
+
+.mascot-img {
+  display: block;
+  width: 220px;
+  height: auto;
+}
+
+.companion-copy h2 {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  letter-spacing: -0.015em;
+}
+
+.companion-copy p {
+  margin: 0 0 18px 0;
+  color: var(--text-secondary);
+  font-size: 14.5px;
+  max-width: 65ch;
+}
+
+.companion-marks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mark-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
 .site-footer {
   padding: 24px 0;
   background: var(--bg-surface);
@@ -505,6 +559,10 @@ kbd {
   }
   .steps-grid {
     grid-template-columns: 1fr;
+  }
+  .companion-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 

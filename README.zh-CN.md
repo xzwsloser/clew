@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/brand/clew-icon.svg" alt="Clew 标志" width="84" height="84" />
+  <img src="assets/brand/clew-icon.svg" alt="Clew 标志" width="88" height="88" />
   <h1>Clew · 源码线索工作台</h1>
   <p><strong>循着线索，读懂复杂源码。</strong> · <em>Find your way through complex codebases.</em></p>
   <p>面向大型复杂代码仓库的只读交互式源码阅读与实现链路理解工作台，作为 <strong>DeepSeek Harness (<code>dsh</code>)</strong> 原生插件发布。</p>
@@ -11,6 +11,12 @@
     <a href="docs/validation/E2E-REPORT.md">多语言验收报告</a>
   </p>
 </div>
+
+<p align="center">
+  <img src="assets/brand/clew-mascot.png" alt="Clew 寻路小狐狸吉祥物：手持金棕色线团在探索地图上追踪唯一线索" width="220" />
+  <br />
+  <sub><em>Clew 探险小狐狸吉祥物 —— 握紧唯一线索，一步步看清复杂系统。</em></sub>
+</p>
 
 ---
 

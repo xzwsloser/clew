@@ -74,6 +74,11 @@ const DICT = {
     'install.s3a': 'Submit a reading goal to generate a verified call/dependency graph.',
     'install.s3b': 'Press Cmd/Ctrl+P for symbol jump or Cmd/Ctrl+Shift+F for ripgrep search.',
     'install.s3c': 'Highlight lines to Peek structs, inspect Git history, Ask AI, or save Reading Paths.',
+    'companion.title': 'Follow one thread, never lost in abstractions',
+    'companion.lead':
+      "Like Ariadne's clew through a labyrinth, Clew anchors every question to real symbols, AST edges, and exact source lines—so you explore with curiosity without drifting into unverified hallucinations.",
+    'companion.mark':
+      'Minimalist labyrinth monogram — engineered crisp down to 16px across light and dark workbenches',
   },
   zh: {
     'nav.badge': '只读工作台 · DSH 原生插件',
@@ -150,6 +155,10 @@ const DICT = {
     'install.s3a': '输入自然语言阅读目标，生成经源码核验的调用链路图。',
     'install.s3b': '使用 Cmd/Ctrl+P 极速跳符号，或 Cmd/Ctrl+Shift+F 进行 ripgrep 全文搜索。',
     'install.s3c': '选中代码即可触发结构速览、Git 提交上下文、上下文问答或保存阅读路径。',
+    'companion.title': '循着一条真线索，不再迷失在抽象层里',
+    'companion.lead':
+      '正如阿里阿德涅穿过迷宫的线团，Clew 将每一个阅读提问牢牢锚定在真实符号、AST 调用边与源码行号上——让探索始终保持好奇，同时绝不滑向无证据幻觉。',
+    'companion.mark': '极简迷宫线索字标 — 深浅主题下均可在 16px 保持锐利轮廓',
   },
 };
 

@@ -25,19 +25,20 @@ interface TopBarProps {
 export function ClewBrandMark({ size = 20 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 256 256" fill="none" aria-hidden="true">
-      <rect x="16" y="16" width="224" height="224" rx="48" fill="#14171C" stroke="#2A303B" strokeWidth="6" />
-      <circle cx="128" cy="108" r="56" stroke="#E07A2F" strokeWidth="10" />
-      <ellipse cx="128" cy="108" rx="52" ry="28" transform="rotate(-32 128 108)" stroke="#F59E0B" strokeWidth="8" />
+      <rect x="16" y="16" width="224" height="224" rx="54" fill="#1B4332" stroke="#2D6A4F" strokeWidth="4" />
       <path
-        d="M128 164C128 178 106 178 90 178C74 178 74 202 92 202H144L170 178L194 202"
-        stroke="#E07A2F"
-        strokeWidth="10"
+        d="M174 180 C142 174 100 160 100 124 C100 98 122 86 144 92 C160 97 166 114 154 126"
+        stroke="#52B788"
+        strokeWidth="18"
         strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <circle cx="144" cy="202" r="11" fill="#2DD4BF" />
-      <circle cx="170" cy="178" r="11" fill="#2DD4BF" />
-      <circle cx="194" cy="202" r="11" fill="#F4F1EA" />
+      <path
+        d="M178 76 A72 72 0 1 0 178 180"
+        stroke="#F6F4EE"
+        strokeWidth="24"
+        strokeLinecap="round"
+      />
+      <circle cx="134" cy="126" r="16" fill="#E87A24" />
     </svg>
   );
 }
