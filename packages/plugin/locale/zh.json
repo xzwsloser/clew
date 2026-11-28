@@ -1,0 +1,160 @@
+{
+  "meta": {
+    "title": "Clew 源码线索工作台",
+    "description": "面向大型复杂代码仓库的只读交互式源码阅读与实现链路理解工作台。"
+  },
+  "panel": {
+    "label": "Clew",
+    "badge": "只读模式",
+    "tagline": "循着线索，读懂复杂源码。",
+    "loading": "正在加载 Clew 工作台..."
+  },
+  "ui": {
+    "toggleLeft": "切换左侧栏",
+    "toggleRight": "切换右侧栏",
+    "readOnlyTooltip": "Clew 绝不修改仓库文件或执行目标仓库脚本。",
+    "selectRepo": "选择仓库",
+    "noRepoOption": "暂未导入仓库",
+    "importRepo": "导入仓库",
+    "goalPlaceholder": "输入阅读目标（例如：请求调度是如何分发执行的？）...",
+    "traceBtn": "追踪链路",
+    "cancel": "取消",
+    "viewMode": "中栏视图模式",
+    "view": {
+      "split": "分屏",
+      "graph": "图谱",
+      "code": "源码"
+    },
+    "diagnostics": "诊断",
+    "leftRailLabel": "仓库导航",
+    "rightDrawerLabel": "上下文与笔记",
+    "emptyRepoHint": "导入本地目录或 Git URL 开始阅读。",
+    "clear": "清空",
+    "delete": "删除",
+    "noResults": "暂无匹配结果。",
+    "left": {
+      "files": "文件",
+      "overview": "概览",
+      "trail": "轨迹"
+    },
+    "overview": {
+      "summary": "仓库摘要",
+      "files": "已索引文件",
+      "symbols": "符号数量",
+      "languages": "语言分布",
+      "buildSystems": "构建系统",
+      "entryPoints": "入口点",
+      "recommendedPaths": "推荐阅读路径"
+    },
+    "trail": {
+      "liveTitle": "探索轨迹",
+      "empty": "跳转定义、打开文件或点击图谱节点时会自动记录探索轨迹。",
+      "savePlaceholder": "学习路径名称...",
+      "saveBtn": "保存路径",
+      "toGraph": "生成图谱",
+      "savedTitle": "已保存阅读路径",
+      "noSaved": "暂无已保存路径。"
+    },
+    "graph": {
+      "loading": "正在检索并校验实现链路图...",
+      "emptyTitle": "实现链路图谱",
+      "emptyDesc": "在上方输入自然语言源码问题或选择符号，生成带源码证据的实现链路图。",
+      "filterPlaceholder": "过滤图谱节点...",
+      "reset": "重置视图"
+    },
+    "confidence": {
+      "source_verified_call": "源码证实",
+      "static_dependency": "静态依赖",
+      "inferred_dynamic": "推断调用",
+      "dataflow": "数据流",
+      "unverified": "未证实"
+    },
+    "reader": {
+      "emptyTitle": "只读源码阅读器",
+      "emptyDesc": "从左侧文件树打开文件、按 Cmd/Ctrl+P 搜索，或点击链路图节点。",
+      "outline": "大纲",
+      "symbolPlaceholder": "符号名...",
+      "askAi": "问 AI",
+      "annotate": "批注",
+      "definition": "跳定义",
+      "references": "查引用",
+      "pin": "加入轨迹",
+      "peek": "结构速览",
+      "peekClose": "关闭",
+      "openDef": "打开定义",
+      "splitCompare": "双栏对照",
+      "closeSplit": "退出分栏",
+      "splitPlaceholder": "选择对照文件...",
+      "gitHistory": "行级提交历史",
+      "noGitHistory": "当前代码行暂无提交历史记录。",
+      "statusLabel": "阅读状态",
+      "status": {
+        "unread": "未标记",
+        "core_entry": "核心入口",
+        "deep_dive": "深入研读",
+        "understood": "已理解"
+      }
+    },
+    "right": {
+      "qa": "上下文问答",
+      "annotations": "批注",
+      "evidence": "证据"
+    },
+    "qa": {
+      "traceSummary": "链路总结",
+      "filesRead": "文件已读取",
+      "placeholder": "针对选中代码、上下游调用或数据流提问...",
+      "askBtn": "发送提问",
+      "thinking": "分析中..."
+    },
+    "annotations": {
+      "title": "行级批注",
+      "revalidate": "校验锚点",
+      "titlePlaceholder": "批注标题（可选）",
+      "bodyPlaceholder": "输入锚定到当前代码行的笔记...",
+      "save": "保存批注",
+      "empty": "在阅读器中选中代码行并点击「批注」即可创建持久化笔记。",
+      "resolve": "标记已解决",
+      "reopen": "重新打开",
+      "replyPlaceholder": "输入回复并按回车..."
+    },
+    "evidence": {
+      "referencesFor": "引用列表：",
+      "edgesTitle": "图谱边源码证据",
+      "empty": "运行链路追踪或查引用后可在此检查源码证据。"
+    },
+    "importModal": {
+      "title": "导入源码仓库（只读）",
+      "local": "本地目录",
+      "git": "Git 仓库 URL",
+      "pathLabel": "本地仓库绝对路径",
+      "urlLabel": "Git 克隆地址（HTTPS / SSH）",
+      "nameLabel": "显示名称（可选）",
+      "namePlaceholder": "默认使用目录或仓库名",
+      "readOnlyNotice": "Clew 仅以只读模式索引源码，绝不执行目标仓库内的任何脚本。",
+      "submit": "导入并索引",
+      "indexing": "正在索引..."
+    },
+    "palette": {
+      "placeholder": "模糊搜索仓库文件与符号...（回车跳转）"
+    },
+    "searchModal": {
+      "title": "全局全文检索（ripgrep）",
+      "placeholder": "输入检索内容...",
+      "searchBtn": "搜索",
+      "subpathPlaceholder": "目录过滤（如 src/）"
+    },
+    "peek": {
+      "title": "选择定义候选"
+    },
+    "diagnosticsModal": {
+      "title": "Clew 诊断与缓存管理",
+      "cacheDir": "磁盘缓存目录",
+      "cacheSize": "缓存占用",
+      "counts": "持久化记录",
+      "lastRun": "最近分析遥测",
+      "clearCache": "清理索引缓存",
+      "logs": "宿主结构化日志"
+    }
+  }
+}

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clew — Find your way through complex codebases</title>
+    <meta
+      name="description"
+      content="An interactive, strictly read-only source code reading & understanding workbench distributed as a native DeepSeek Harness (dsh) plugin."
+    />
+    <link rel="icon" href="./assets/clew-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="#top" class="brand-lockup">
+          <img src="./assets/clew-icon.svg" alt="Clew" width="28" height="28" />
+          <span class="brand-name">Clew</span>
+          <span class="badge-readonly" data-i18n="nav.badge">READ-ONLY · DSH NATIVE</span>
+        </a>
+        <nav class="header-nav" aria-label="Primary">
+          <a href="#features" data-i18n="nav.features">Capabilities</a>
+          <a href="#showcase" data-i18n="nav.showcase">Workbench</a>
+          <a href="#benchmarks" data-i18n="nav.benchmarks">Benchmarks</a>
+          <a href="#install" data-i18n="nav.install">Quick Start</a>
+          <a
+            href="https://github.com/xzwsloser/clew"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-i18n="nav.github"
+          >
+            GitHub
+          </a>
+        </nav>
+        <div class="header-controls">
+          <button type="button" id="lang-toggle" class="ctrl-btn" aria-label="Switch Language">
+            中文
+          </button>
+          <button type="button" id="theme-toggle" class="ctrl-btn" aria-label="Toggle Color Theme">
+            Light
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow mono" data-i18n="hero.eyebrow">
+              @clew/dsh-plugin v0.1.0 · Zero-LSP · Web Tree-sitter WASM
+            </div>
+            <h1 data-i18n="hero.title">Find your way through complex codebases.</h1>
+            <p class="hero-lead" data-i18n="hero.lead">
+              Clew turns unfamiliar Python, C, C++, Go, Rust, and TypeScript/JavaScript repositories into verified implementation trace graphs, zero-config definition navigation, and persistent reading notes inside DeepSeek Harness.
+            </p>
+            <div class="hero-actions">
+              <a href="#install" class="btn-primary" data-i18n="hero.ctaInstall">Install in DeepSeek Harness</a>
+              <a
+                href="https://github.com/xzwsloser/clew/blob/main/docs/ARCHITECTURE.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-secondary"
+                data-i18n="hero.ctaDocs"
+              >
+                Read Architecture Spec
+              </a>
+            </div>
+            <div class="trust-strip">
+              <span class="trust-item"><strong data-i18n="hero.stat1v">7 Languages</strong> <span data-i18n="hero.stat1k">WASM Tree-sitter</span></span>
+              <span class="trust-sep">·</span>
+              <span class="trust-item"><strong data-i18n="hero.stat2v">0 Native Builds</strong> <span data-i18n="hero.stat2k">No node-gyp / LSP</span></span>
+              <span class="trust-sep">·</span>
+              <span class="trust-item"><strong data-i18n="hero.stat3v">100% Read-Only</strong> <span data-i18n="hero.stat3k">Verified source citations</span></span>
+            </div>
+          </div>
+
+          <div class="hero-frame">
+            <img
+              src="./assets/screenshots/workbench-dark-en.png"
+              alt="Clew 3-column source reading workbench running inside DeepSeek Harness on Rust ripgrep"
+              class="hero-shot"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section border-top">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="features.title">Built for systematic source comprehension</h2>
+            <p data-i18n="features.subtitle">
+              Deterministic indexing first, bounded AI reasoning second — every graph edge and AI citation is cross-checked against real repository lines.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="card">
+              <div class="card-tag mono" data-i18n="features.c1tag">ZERO-CONFIG NAVIGATION</div>
+              <h3 data-i18n="features.c1title">Go to Definition &amp; AST-Filtered References</h3>
+              <p data-i18n="features.c1body">
+                4-tier symbol ranking (lexical scope, resolved imports, module siblings, global index) plus ripgrep word-boundary search pruned with Tree-sitter AST to drop comment and string false positives.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="card-tag mono" data-i18n="features.c2tag">EVIDENCE VERIFICATION</div>
+              <h3 data-i18n="features.c2title">Trace Graphs That Distinguish Proof from Guess</h3>
+              <p data-i18n="features.c2body">
+                Reading goals trigger bounded subgraph retrieval laid out in an ELK Web Worker, clearly tagging every edge as source-verified call, static dependency, inferred dynamic, or unverified.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="card-tag mono" data-i18n="features.c3tag">DEEP READING ERGONOMICS</div>
+              <h3 data-i18n="features.c3title">Split Compare, Peek Cards &amp; Git History</h3>
+              <p data-i18n="features.c3body">
+                Compare callers and callees side-by-side in dual-pane view, inspect struct/interface definitions inline via non-blocking Peek Cards, view read-only line commit logs, and track per-file reading statuses.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="card-tag mono" data-i18n="features.c4tag">SECURITY BOUNDARY</div>
+              <h3 data-i18n="features.c4title">Strict Read-Only &amp; Untrusted Repo Isolation</h3>
+              <p data-i18n="features.c4body">
+                Clew never writes files or executes imported repo scripts (core.hooksPath=/dev/null), enforces symlink containment checks, escapes untrusted output, and anchors persistent notes safely across sessions.
+              </p>
+            </article>
+          </div>
+
+          <div class="lang-strip">
+            <span class="lang-pill"><i class="dot py"></i>Python</span>
+            <span class="lang-pill"><i class="dot c"></i>C / C++</span>
+            <span class="lang-pill"><i class="dot go"></i>Go</span>
+            <span class="lang-pill"><i class="dot rs"></i>Rust</span>
+            <span class="lang-pill"><i class="dot ts"></i>TypeScript / TSX</span>
+            <span class="lang-pill"><i class="dot js"></i>JavaScript + ripgrep fallback</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="showcase" class="section border-top">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="showcase.title">Real DeepSeek Harness Runtime Views</h2>
+            <p data-i18n="showcase.subtitle">
+              Captured directly from live browser verification runs across Dark/Light host themes and English/Simplified Chinese locales.
+            </p>
+          </div>
+
+          <div class="showcase-tabs" role="tablist" aria-label="Product views">
+            <button type="button" class="tab-btn active" data-shot="workbench-dark-en" data-i18n="showcase.t1">3-Column Workbench (Dark)</button>
+            <button type="button" class="tab-btn" data-shot="split-peek-git" data-i18n="showcase.t2">Split Compare + Peek + Git</button>
+            <button type="button" class="tab-btn" data-shot="workbench-light-en" data-i18n="showcase.t3">Light Theme (1280×800)</button>
+            <button type="button" class="tab-btn" data-shot="workbench-dark-zh" data-i18n="showcase.t4">Chinese UI</button>
+            <button type="button" class="tab-btn" data-shot="diagnostics" data-i18n="showcase.t5">Diagnostics &amp; Cache</button>
+          </div>
+
+          <div class="showcase-stage">
+            <img
+              id="showcase-img"
+              src="./assets/screenshots/workbench-dark-en.png"
+              alt="Clew interactive workbench view"
+            />
+            <p id="showcase-caption" class="showcase-caption" data-i18n="showcase.c1">
+              Left repository tree &amp; exploration trail, center ELK trace graph + virtualized code reader, right contextual Ask AI with clickable citations.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="benchmarks" class="section border-top">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="bench.title">Validated on Real Multi-Language OSS Codebases</h2>
+            <p data-i18n="bench.subtitle">
+              Measured end-to-end on Node v26.13.1 with SHA-256 incremental disk caching and zero native compilation.
+            </p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="bench-table">
+              <thead>
+                <tr>
+                  <th data-i18n="bench.hRepo">Repository</th>
+                  <th data-i18n="bench.hStack">Languages</th>
+                  <th data-i18n="bench.hScale">Files / Symbols</th>
+                  <th data-i18n="bench.hCold">Cold Index</th>
+                  <th data-i18n="bench.hWarm">Warm Cache Hit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong class="mono">BurntSushi/ripgrep</strong> <span class="muted mono">@ 3e85c6c</span></td>
+                  <td>Rust (Cargo)</td>
+                  <td class="mono">221 / 4,116</td>
+                  <td class="mono">2,613 ms</td>
+                  <td class="mono verified">458 ms (~5.7×)</td>
+                </tr>
+                <tr>
+                  <td><strong class="mono">gin-gonic/gin</strong> <span class="muted mono">@ eb4d4b5</span></td>
+                  <td>Go (Go Modules)</td>
+                  <td class="mono">129 / 1,643</td>
+                  <td class="mono">1,225 ms</td>
+                  <td class="mono verified">162 ms (~7.6×)</td>
+                </tr>
+                <tr>
+                  <td><strong class="mono">ggml-org/llama.cpp</strong> <span class="muted mono">@ 8e23278</span></td>
+                  <td>C++, C, Python, TS, JS</td>
+                  <td class="mono">4,737 / 48,952</td>
+                  <td class="mono">44,577 ms</td>
+                  <td class="mono verified">7,590 ms (~5.9×)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="install" class="section border-top">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="install.title">Install &amp; Start Reading in 60 Seconds</h2>
+            <p data-i18n="install.subtitle">
+              Clew plugs straight into DeepSeek Harness — no separate API gateway or per-repo IDE indexing required.
+            </p>
+          </div>
+
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-num mono">01</div>
+              <h3 data-i18n="install.s1t">Build &amp; Register Plugin</h3>
+              <pre class="code-box"><code>git clone https://github.com/xzwsloser/clew.git
+cd clew
+pnpm install --ignore-scripts
+pnpm run build
+dsh plugin --profile web add "$(pwd)/packages/plugin"</code></pre>
+            </div>
+
+            <div class="step-card">
+              <div class="step-num mono">02</div>
+              <h3 data-i18n="install.s2t">Launch DSH &amp; Import Repo</h3>
+              <pre class="code-box"><code>dsh web --port 18765 --host 127.0.0.1</code></pre>
+              <p class="step-note" data-i18n="install.s2d">
+                Open Clew from the left navigation rail, click <strong>+ Import Repo</strong>, and point to any local directory or HTTPS/SSH Git URL.
+              </p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-num mono">03</div>
+              <h3 data-i18n="install.s3t">Trace, Compare &amp; Annotate</h3>
+              <ul class="step-list">
+                <li data-i18n="install.s3a">Submit a reading goal to generate a verified call/dependency graph.</li>
+                <li data-i18n="install.s3b">Press <kbd>Cmd/Ctrl+P</kbd> for symbol jump or <kbd>Cmd/Ctrl+Shift+F</kbd> for ripgrep search.</li>
+                <li data-i18n="install.s3c">Highlight lines to Peek structs, inspect Git history, Ask AI, or save Reading Paths.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer border-top">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <img src="./assets/clew-icon.svg" alt="Clew" width="22" height="22" />
+          <span>Clew — Find your way through complex codebases.</span>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/xzwsloser/clew" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://github.com/xzwsloser/clew/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noopener noreferrer">ARCHITECTURE</a>
+          <a href="https://github.com/xzwsloser/clew/blob/main/DESIGN.md" target="_blank" rel="noopener noreferrer">DESIGN</a>
+          <a href="https://github.com/xzwsloser/clew/blob/main/docs/validation/E2E-REPORT.md" target="_blank" rel="noopener noreferrer">E2E Report</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
