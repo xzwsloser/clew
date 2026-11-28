@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/brand/clew-icon.svg" alt="Clew Logo" width="84" height="84" />
+  <img src="assets/brand/clew-icon.svg" alt="Clew Logo" width="88" height="88" />
   <h1>Clew</h1>
   <p><strong>Find your way through complex codebases.</strong> · 循着线索，读懂复杂源码。</p>
   <p>An interactive, AI-agent-driven, strictly read-only source code reading & understanding workbench distributed as a native <strong>DeepSeek Harness (<code>dsh</code>)</strong> plugin.</p>
@@ -11,6 +11,12 @@
     <a href="docs/validation/E2E-REPORT.md">OSS Validation</a>
   </p>
 </div>
+
+<p align="center">
+  <img src="assets/brand/clew-mascot.png" alt="Clew Pathfinder Fox Mascot holding a yarn clew over an exploration trail map" width="220" />
+  <br />
+  <sub><em>Meet Clew's Pathfinder Fox — follow a single verified thread through unfamiliar codebases.</em></sub>
+</p>
 
 ---
 

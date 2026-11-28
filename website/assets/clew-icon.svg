@@ -1,15 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-label="Clew brand mark">
-  <rect x="16" y="16" width="224" height="224" rx="48" fill="#14171C" stroke="#2A303B" stroke-width="3"/>
-  <!-- Outer clew thread loops -->
-  <circle cx="128" cy="108" r="56" stroke="#E07A2F" stroke-width="8.5"/>
-  <ellipse cx="128" cy="108" rx="52" ry="30" transform="rotate(-32 128 108)" stroke="#F59E0B" stroke-width="7"/>
-  <ellipse cx="128" cy="108" rx="52" ry="28" transform="rotate(38 128 108)" stroke="#C8631E" stroke-width="7"/>
-  <ellipse cx="128" cy="108" rx="28" ry="52" transform="rotate(-14 128 108)" stroke="#E07A2F" stroke-width="7"/>
-  <path d="M84 88C98 118 138 126 172 96" stroke="#F4F1EA" stroke-width="7.5" stroke-linecap="round"/>
-  <!-- Unwinding clue thread into code-graph path -->
-  <path d="M128 164C128 178 106 178 90 178C74 178 74 202 92 202H144L170 178L194 202" stroke="#E07A2F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Graph nodes -->
-  <circle cx="144" cy="202" r="9.5" fill="#2DD4BF" stroke="#14171C" stroke-width="2.5"/>
-  <circle cx="170" cy="178" r="9.5" fill="#2DD4BF" stroke="#14171C" stroke-width="2.5"/>
-  <circle cx="194" cy="202" r="9.5" fill="#F4F1EA" stroke="#14171C" stroke-width="2.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <rect x="16" y="16" width="224" height="224" rx="54" fill="#1B4332" stroke="#2D6A4F" stroke-width="4" />
+  <path
+    d="M174 180 C142 174 100 160 100 124 C100 98 122 86 144 92 C160 97 166 114 154 126"
+    stroke="#52B788"
+    stroke-width="18"
+    stroke-linecap="round"
+  />
+  <path
+    d="M178 76 A72 72 0 1 0 178 180"
+    stroke="#F6F4EE"
+    stroke-width="24"
+    stroke-linecap="round"
+  />
+  <circle cx="134" cy="126" r="16" fill="#E87A24" />
 </svg>

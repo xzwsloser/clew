@@ -16,16 +16,24 @@
 
 ---
 
-## 2. Brand Identity & Design-Phase Concept References
+## 2. Brand Identity & Visual Concept Archive
 
-> **Strict Rule**: Concept images below were generated strictly for design-phase alignment. Final `README.md`, `docs/UI-REVIEW.md`, and `website/` product showcases MUST use real running browser screenshots.
+> **Strict Rule**: Concept explorations were produced during brand/design alignment via GPT Image (`image_gen`) and refined into optical vector SVG. Product showcases in `README.md`, `docs/UI-REVIEW.md`, and `website/` MUST always use real running browser screenshots, and the **Mascot (`clew-mascot.png`)** is reserved strictly for welcome/README surfaces—never crammed into tiny plugin toolbars (`TopBar`, `sidebar.panellist` icon).
+
+### Brand Palette (Brand Mark & Editorial Companion)
+- **Forest Green** (`#1B4332` / border `#2D6A4F`): Primary tile & structural ground
+- **Moss Green** (`#40916C` / UI highlight `#52B788`): Continuous clue trail accent
+- **Warm White** (`#F6F4EE`): High-contrast primary **C** silhouette
+- **Warm Amber** (`#E87A24` / `#D97706`): Single focal clue beacon (also harmonized with `--accent-primary`)
 
 | Asset | Purpose | Preview |
 |---|---|---|
-| **Original Brand Mark** | Geometric clew-to-graph icon (zero text, light/dark legible) | ![Clew Icon](assets/brand/clew-icon.svg) |
-| **Brand Exploration** | Nano Banana concept artwork (`1024x1024`) | ![Brand Concept](assets/brand/clew-brand-concept.png) |
-| **Workbench Concept** | Nano Banana 3-column workbench moodboard (`1376x768`) | ![Workbench Concept](assets/design/workbench-concept.png) |
-| **Homepage Concept** | Editorial SVG wireframe (Nano Banana Image 2 hit 429 quota) | ![Landing Concept](assets/design/landing-concept.svg) |
+| **Formal Logo (Optical SVG)** | Continuous Labyrinth **C** monogram + clue trail (`16px`–`512px`, light/dark legible, zero text/robots) | ![Clew Icon](assets/brand/clew-icon.svg) |
+| **Transparent PNG Matrix** | Raster exports (`16, 24, 32, 64, 128, 256, 512` px) verified on `#FFFFFF` / `#F8F7F4` / `#181B21` / `#111317` | `assets/brand/clew-icon-{16..512}.png` |
+| **Project Mascot** | Pathfinder Forest Fox holding a yarn clew over an unfolded trail map (README & welcome pages only) | ![Clew Mascot](assets/brand/clew-mascot.png) |
+| **Brand Concept Archive** | 3 GPT Image formal logo concepts + 2 mascot concepts | `assets/brand/concepts/{logo-concept-1..3,mascot-concept-1..2}.png` |
+| **Workbench Concept** | Original design-phase 3-column workbench moodboard (`1376x768`) | ![Workbench Concept](assets/design/workbench-concept.png) |
+| **Homepage Concept** | Editorial SVG landing wireframe | ![Landing Concept](assets/design/landing-concept.svg) |
 
 ---
 
