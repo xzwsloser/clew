@@ -8,7 +8,7 @@
 |---|---|---|---|
 | **Antigravity** (Primary Architect & Builder) | Built-in execution & planning environment | Verified active | Primary design, implementation, testing, browser & artifact management |
 | **Codex CLI** (`codex-cli 0.172.0`) | `/home/xzw/.local/bin/codex` (`codex exec --skip-git-repo-check -s read-only`) | Verified (`gpt-6.2-sol`, returned valid JSON response) | Architecture review, adversarial design critique, algorithm & security second opinion; discussions logged under `docs/discussions/` |
-| **Image Generator** (Nano Banana) | Antigravity built-in `image-generator` subagent | Ready (invoked in M2) | Original brand icon exploration & design-phase concept mockups (`assets/brand/`, `assets/design/`) |
+| **Image Generator** (Nano Banana) | Antigravity built-in `image-generator` subagent | Verified (`clew-brand-concept.png` + `workbench-concept.png` generated; 3rd image hit `RESOURCE_EXHAUSTED` 429 quota, covered by handcrafted vector `landing-concept.svg`) | Original brand icon exploration & design-phase concept mockups (`assets/brand/`, `assets/design/`) |
 | **Browser & Playwright** | Antigravity `browser` subagent + `/usr/bin/google-chrome-stable` + `~/.cache/ms-playwright/chromium_headless_shell-1223` | Verified installed | Multi-viewport visual review (`1280x800`, `1440x900`, `1920x1080`) & E2E verification |
 
 ## 2. Project-Level Development Skills (`.agents/skills/`)
