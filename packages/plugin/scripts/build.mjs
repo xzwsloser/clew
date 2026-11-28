@@ -18,7 +18,14 @@ await esbuild.build({
   platform: 'node',
   target: 'node24',
   sourcemap: true,
-  external: ['zod', '@deepseek-ai/*', 'node:*'],
+  external: [
+    'zod',
+    '@deepseek-ai/*',
+    'node:*',
+    'ignore',
+    'web-tree-sitter',
+    'tree-sitter-*',
+  ],
 });
 
 // 2. Build Client CJS factory bundle wrapped in DSH window.__ModuleLoader__.load
